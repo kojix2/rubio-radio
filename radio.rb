@@ -20,19 +20,29 @@ class Radio
 
   include Glimmer
 
-  attr_accessor :stations
+  attr_accessor :stations, :player
 
   def initialize
     @stations = [
-      Station.new('BBC', 'BBC World Service', "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service"),
+      Station.new('BBC', 'BBC World Service', 'http://stream.live.vc.bbcmedia.co.uk/bbc_world_service'),
       Station.new('CNN', 'CNN International', 'https://tunein.streamguys1.com/CNNi.m3u')
     ]
     @idx = nil
     @pid = nil
+    @thr = nil
+    @player = 'cvlc'
+
+    Glimmer::LibUI.timer(1) do
+      if !@thr.nil? && !@thr.alive?
+        stop_station
+
+      end
+      true
+    end
   end
 
   def station
-    stations[@idx]
+    @idx ? stations[@idx] : nil
   end
 
   def selected_station_at(idx)
@@ -50,13 +60,15 @@ class Radio
   end
 
   def play_station
-    @pid = spawn("mpg123 #{station.url}")
+    @pid = spawn("#{player} #{station.url}")
+    @thr = Process.detach(@pid)
     station.playing = true
   end
 
   def stop_station
-    Process.kill('TERM', @pid) if @pid
-    station.playing = false if station
+    Process.kill(:TERM, @pid) if @thr.alive?
+    @thr = nil
+    station.playing = false if @idx
     @idx = nil
   end
 
