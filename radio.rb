@@ -34,7 +34,6 @@ class Radio
     end
 
     def stop?
-      p @thr
       @thr.nil? || @thr.stop?
     end
 
@@ -57,7 +56,7 @@ class Radio
 
   attr_accessor :stations, :player
 
-  def initialize
+  def initialize(backend)
     @stations = [
       Station.new('BBC', 'BBC World Service', 'http://stream.live.vc.bbcmedia.co.uk/bbc_world_service'),
       Station.new('CNN', 'CNN International', 'https://tunein.streamguys1.com/CNNi.m3u')
@@ -65,13 +64,13 @@ class Radio
     @idx = nil
     @pid = nil
     @thr = nil
-    @player = Player.new
+    @player = Player.new(backend)
 
     Glimmer::LibUI.timer(1) do
-      unless @player.alive?
-        warn '[radio] player stopped!'
-        stop
-      end
+      next if @idx.nil? || @player.alive?
+
+      message_box('player stopped!', "#{@player.thr}")
+      stop
       true
     end
   end
@@ -90,7 +89,12 @@ class Radio
 
   def play_at(idx)
     station = stations[idx]
-    @player.play(station.url)
+    begin
+      @player.play(station.url)
+    rescue StandardError => e
+      message_box(e.message)
+      raise e
+    end
     station.playing = true
   end
 
@@ -108,6 +112,7 @@ class Radio
 
   def stop
     stop_at(@idx)
+    @idx = nil
   end
 
   def launch
@@ -127,10 +132,17 @@ class Radio
         end
       end
       on_closing do
-        stop 
+        stop
       end
     end.show
   end
 end
 
-Radio.new.launch
+require 'optparse'
+backend = nil
+opt = OptionParser.new
+opt.on('--vlc') { backend = 'cvlc' }
+opt.on('--mpg123') { backend = 'mpg123' }
+opt.parse!(ARGV)
+
+Radio.new(backend).launch
