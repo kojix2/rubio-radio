@@ -5,72 +5,11 @@ require 'open-uri'
 require 'json'
 
 require_relative 'radio/version'
+require_relative 'radio/station'
+require_relative 'radio/radio_browser'
+require_relative 'radio/player'
 
 class Radio
-  class Station
-    attr_accessor :name, :language, :url, :playing
-
-    def initialize(name, language, url)
-      @name = name
-      @language = language
-      @url = url
-      @playing = false
-    end
-
-    def play
-      @playing ? '■' : '▶'
-    end
-  end
-
-  module RadioBrowser
-    module_function
-
-    def base_url
-      'http://all.api.radio-browser.info/json/'
-    end
-
-    def topvote(n = 100)
-      content = URI.parse(base_url + "stations/topvote/#{n}")
-      JSON[content.read].map do |s|
-        Station.new(s['name'], s['language'], s['url_resolved'])
-      end
-    end
-  end
-
-  class Player
-    attr_accessor :backend, :pid, :thr
-
-    def initialize(backend = 'cvlc')
-      @backend = backend
-      @pid = nil
-      @thr = nil
-    end
-
-    def alive?
-      return false if @thr.nil?
-
-      @thr.alive?
-    end
-
-    def stop?
-      @thr.nil? || @thr.stop?
-    end
-
-    def play(url)
-      @pid = spawn("#{backend} #{url}")
-      @thr = Process.detach(@pid)
-    end
-
-    def stop
-      return unless alive?
-
-      r = Process.kill(:TERM, pid)
-      @thr = nil
-      @pid = nil
-      r
-    end
-  end
-
   include Glimmer
 
   attr_accessor :stations, :player

@@ -4,7 +4,7 @@
 require 'radio'
 
 require 'optparse'
-backend = nil
+backend = 'cvlc'
 opt = OptionParser.new
 opt.on('--vlc') { backend = 'cvlc' }
 opt.on('--mpg123') { backend = 'mpg123' }
