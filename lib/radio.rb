@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'glimmer-dsl-libui'
-require 'open-uri'
-require 'json'
 
 require_relative 'radio/version'
 require_relative 'radio/station'

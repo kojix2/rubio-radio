@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'json'
+require 'open-uri'
+
 class Radio
   module RadioBrowser
     module_function
