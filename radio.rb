@@ -1,20 +1,37 @@
 # frozen_string_literal: true
 
 require 'glimmer-dsl-libui'
+require 'open-uri'
+require 'json'
 
 class Radio
   class Station
-    attr_accessor :name, :desc, :url, :playing
+    attr_accessor :name, :language, :url, :playing
 
-    def initialize(name, desc, url)
+    def initialize(name, language, url)
       @name = name
-      @desc = desc
+      @language = language
       @url = url
       @playing = false
     end
 
     def play
       @playing ? '■' : '▶'
+    end
+  end
+
+  module RadioBrowser
+    module_function
+
+    def base_url
+      'http://all.api.radio-browser.info/json/'
+    end
+
+    def topvote(n = 1000)
+      content = URI.parse(base_url + "stations/topvote/#{n}")
+      JSON[content.read].map do |s|
+        Station.new(s['name'], s['language'], s['url_resolved'])
+      end
     end
   end
 
@@ -57,10 +74,7 @@ class Radio
   attr_accessor :stations, :player
 
   def initialize(backend)
-    @stations = [
-      Station.new('BBC', 'BBC World Service', 'http://stream.live.vc.bbcmedia.co.uk/bbc_world_service'),
-      Station.new('CNN', 'CNN International', 'https://tunein.streamguys1.com/CNNi.m3u')
-    ]
+    @stations = RadioBrowser.topvote(100)
     @idx = nil
     @pid = nil
     @thr = nil
@@ -116,8 +130,13 @@ class Radio
   end
 
   def launch
-    window('Radio', 600, 200) do
+    window('Radio', 400, 200) do
       vertical_box do
+        horizontal_box do
+          stretchy false
+          search_entry do
+          end
+        end
         horizontal_box do
           table do
             button_column('Play') do
@@ -126,7 +145,7 @@ class Radio
               end
             end
             text_column('name')
-            text_column('desc')
+            text_column('language')
             cell_rows <= [self, :stations]
           end
         end
