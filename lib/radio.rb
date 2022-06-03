@@ -4,7 +4,7 @@ require 'glimmer-dsl-libui'
 require 'open-uri'
 require 'json'
 
-require_relative "radio/version"
+require_relative 'radio/version'
 
 class Radio
   class Station
@@ -29,7 +29,7 @@ class Radio
       'http://all.api.radio-browser.info/json/'
     end
 
-    def topvote(n = 1000)
+    def topvote(n = 100)
       content = URI.parse(base_url + "stations/topvote/#{n}")
       JSON[content.read].map do |s|
         Station.new(s['name'], s['language'], s['url_resolved'])
@@ -77,6 +77,7 @@ class Radio
 
   def initialize(backend)
     @stations = RadioBrowser.topvote(100)
+    @stations_original = @stations.dup
     @idx = nil
     @pid = nil
     @thr = nil
@@ -136,7 +137,16 @@ class Radio
       vertical_box do
         horizontal_box do
           stretchy false
-          search_entry do
+          search_entry do |se|
+            on_changed do
+              filter_value = se.text
+              @stations.replace @stations_original
+              unless filter_value.empty?
+                stations.filter! do |row_data|
+                  row_data.name.downcase.include?(filter_value.downcase)
+                end
+              end
+            end
           end
         end
         horizontal_box do
