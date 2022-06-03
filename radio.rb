@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 require 'glimmer-dsl-libui'
 require 'open-uri'
 require 'json'
