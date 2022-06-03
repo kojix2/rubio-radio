@@ -18,6 +18,41 @@ class Radio
     end
   end
 
+  class Player
+    attr_accessor :backend, :pid, :thr
+
+    def initialize(backend = 'cvlc')
+      @backend = backend
+      @pid = nil
+      @thr = nil
+    end
+
+    def alive?
+      return false if @thr.nil?
+
+      @thr.alive?
+    end
+
+    def stop?
+      p @thr
+      @thr.nil? || @thr.stop?
+    end
+
+    def play(url)
+      @pid = spawn("#{backend} #{url}")
+      @thr = Process.detach(@pid)
+    end
+
+    def stop
+      return unless alive?
+
+      r = Process.kill(:TERM, pid)
+      @thr = nil
+      @pid = nil
+      r
+    end
+  end
+
   include Glimmer
 
   attr_accessor :stations, :player
@@ -30,46 +65,49 @@ class Radio
     @idx = nil
     @pid = nil
     @thr = nil
-    @player = 'cvlc'
+    @player = Player.new
 
     Glimmer::LibUI.timer(1) do
-      if !@thr.nil? && !@thr.alive?
-        stop_station
-
+      unless @player.alive?
+        warn '[radio] player stopped!'
+        stop
       end
       true
     end
   end
 
-  def station
-    @idx ? stations[@idx] : nil
-  end
-
   def selected_station_at(idx)
-    case @idx
-    when idx
-      stop_station
-    when nil
-      @idx = idx
-      play_station
+    raise unless idx.is_a?(Integer)
+
+    if @idx == idx
+      stop_at(idx)
     else
-      stop_station
-      @idx = idx
-      play_station
+      stop
+      play_at(idx)
     end
+    @idx = idx
   end
 
-  def play_station
-    @pid = spawn("#{player} #{station.url}")
-    @thr = Process.detach(@pid)
+  def play_at(idx)
+    station = stations[idx]
+    @player.play(station.url)
     station.playing = true
   end
 
-  def stop_station
-    Process.kill(:TERM, @pid) if @thr.alive?
-    @thr = nil
-    station.playing = false if @idx
-    @idx = nil
+  def play
+    play_at(@idx)
+  end
+
+  def stop_at(idx)
+    return if idx.nil?
+
+    station = stations[idx]
+    @player.stop
+    station.playing = false
+  end
+
+  def stop
+    stop_at(@idx)
   end
 
   def launch
@@ -87,6 +125,9 @@ class Radio
             cell_rows <= [self, :stations]
           end
         end
+      end
+      on_closing do
+        stop 
       end
     end.show
   end
