@@ -18,8 +18,6 @@ class Radio
     @stations = RadioBrowser.topvote(100)
     @stations_original = @stations.dup
     @idx = nil
-    @pid = nil
-    @thr = nil
     @player = Player.new(backend)
 
     Glimmer::LibUI.timer(1) do
