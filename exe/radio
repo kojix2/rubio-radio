@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "radio"
+
+require 'optparse'
+backend = nil
+opt = OptionParser.new
+opt.on('--vlc') { backend = 'cvlc' }
+opt.on('--mpg123') { backend = 'mpg123' }
+opt.parse!(ARGV)
+
+Radio.new(backend).launch

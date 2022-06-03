@@ -4,6 +4,8 @@ require 'glimmer-dsl-libui'
 require 'open-uri'
 require 'json'
 
+require_relative "radio/version"
+
 class Radio
   class Station
     attr_accessor :name, :language, :url, :playing
@@ -156,12 +158,3 @@ class Radio
     end.show
   end
 end
-
-require 'optparse'
-backend = nil
-opt = OptionParser.new
-opt.on('--vlc') { backend = 'cvlc' }
-opt.on('--mpg123') { backend = 'mpg123' }
-opt.parse!(ARGV)
-
-Radio.new(backend).launch
