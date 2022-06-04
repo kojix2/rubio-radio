@@ -13,8 +13,8 @@ class Radio
   attr_accessor :stations, :player
 
   def initialize(backend, debug: false)
-    @stations, @table = RadioBrowser.topvote(100)
-    @stations_all = @stations.dup
+    @stations_all, @table = RadioBrowser.topvote(1000)
+    @stations = @stations_all.dup
     @station_uuid = nil
     @player = Player.new(backend)
 
@@ -22,8 +22,9 @@ class Radio
       p @player.history if debug
       next if @station_uuid.nil? || @player.alive?
 
-      message_box('player stopped!', @player.thr.to_s)
-      stop
+      message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
+      stop_uuid(@station_uuid)
+      @station_uuid = nil
       true
     end
   end
@@ -68,11 +69,12 @@ class Radio
           search_entry do |se|
             on_changed do
               filter_value = se.text
-              @stations.replace @stations_all
-              unless filter_value.empty?
-                stations.filter! do |row_data|
+              if filter_value.empty?
+                @stations.replace @stations_all.dup
+              else
+                @stations.replace(@stations_all.filter do |row_data|
                   row_data.name.downcase.include?(filter_value.downcase)
-                end
+                end)
               end
             end
           end
