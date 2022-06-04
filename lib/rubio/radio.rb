@@ -6,7 +6,7 @@ module Rubio
   class Radio
     include Glimmer
 
-    attr_accessor :stations, :player
+    attr_reader :stations, :player
 
     def initialize(backend, debug: false)
       @stations_all, @table = RadioBrowser.topvote(1000)
@@ -14,6 +14,10 @@ module Rubio
       @station_uuid = nil
       @player = Player.new(backend)
 
+      monitor_thread(debug)
+    end
+
+    def monitor_thread(debug)
       Glimmer::LibUI.timer(1) do
         p @player.history if debug
         next if @station_uuid.nil? || @player.alive?
@@ -98,7 +102,7 @@ module Rubio
 
     def uuid_to_station(uuid)
       idx = @table[uuid]
-      station = @stations_all[idx]
+      @stations_all[idx]
     end
   end
 end

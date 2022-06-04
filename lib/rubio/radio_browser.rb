@@ -4,6 +4,7 @@ require 'json'
 require 'open-uri'
 
 module Rubio
+  # https://www.radio-browser.info
   module RadioBrowser
     module_function
 
