@@ -9,7 +9,16 @@ debug = false
 opt = OptionParser.new
 opt.on('--vlc') { backend = 'cvlc' }
 opt.on('--mpg123') { backend = 'mpg123' }
+opt.on('--backend CMD') { |b| backend = b }
 opt.on('--debug') { debug = true }
+opt.on('--help') do
+  puts opt
+  exit
+end
+opt.on('--version') do
+  puts Rubio::VERSION
+  exit
+end
 opt.parse!(ARGV)
 
 radio = Rubio::Radio.new(backend, debug: debug)
