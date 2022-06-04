@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['kojix2']
   spec.email         = ['2xijok@gmail.com']
 
-  spec.summary       = 'Rubio'
-  spec.description   = 'Rubio'
+  spec.summary       = 'Rubio - A simple radio player'
+  spec.description   = 'Rubio is a simple radio player written in Ruby.'
   spec.homepage      = 'https://github.com/kojix2/rubio'
   spec.license       = 'MIT'
 
@@ -19,5 +19,4 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'glimmer-dsl-libui'
-  spec.add_runtime_dependency 'matrix' # will be removed
 end
