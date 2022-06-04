@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubio (0.0.0)
+    rubio-radio (0.0.0)
       glimmer-dsl-libui
       matrix
 
@@ -45,7 +45,7 @@ PLATFORMS
 DEPENDENCIES
   minitest
   rake
-  rubio!
+  rubio-radio!
 
 BUNDLED WITH
    2.3.15

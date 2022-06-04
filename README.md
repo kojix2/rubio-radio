@@ -1,4 +1,17 @@
 # Rubio
 
-Rubio
+![img](https://user-images.githubusercontent.com/5798442/171986696-24bedc38-3811-4c62-a5ad-89c09d015c8a.png)
+## installation
 
+Requirements
+
+* [cvlc](https://github.com/videolan/vlc) [default]
+* You can use any command line player that can take URL of radio station as its first argument.
+  * `rubio --backend niceplayer`
+
+```
+gem install rubio-radio
+```
+## LICENSE
+
+MIT
