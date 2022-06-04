@@ -25,11 +25,11 @@ module Rubio
     end
 
     def play(url)
-      # do not include spaces in the command line
+      # Do not include spaces in the command line
       # if a space exist :
       #   * sh -c command url # this process with @pid will be killed
       #   * cmmand url        # will not be killd because pid is differennt
-      # if no space : command url
+      # if no space :
       #   * cmmand url        # will be killed by @pid
       raise if url.match(/\s/)
 
