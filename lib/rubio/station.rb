@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Radio
+module Rubio
   BaseStation = Struct.new(:stationuuid, :name, :language, :url)
 
   class Station < BaseStation

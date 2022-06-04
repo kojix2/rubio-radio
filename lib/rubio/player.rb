@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Radio
+module Rubio
   class Player
     attr_accessor :backend, :pid, :thr, :status, :history
 

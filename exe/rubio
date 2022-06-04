@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'radio'
+require 'rubio'
 
 require 'optparse'
 backend = 'cvlc'
@@ -12,7 +12,7 @@ opt.on('--mpg123') { backend = 'mpg123' }
 opt.on('--debug') { debug = true }
 opt.parse!(ARGV)
 
-radio = Radio.new(backend, debug: debug)
+radio = Rubio::Radio.new(backend, debug: debug)
 begin
   radio.launch
 rescue StandardError => e

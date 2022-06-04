@@ -3,7 +3,7 @@
 require 'json'
 require 'open-uri'
 
-class Radio
+module Rubio
   module RadioBrowser
     module_function
 
