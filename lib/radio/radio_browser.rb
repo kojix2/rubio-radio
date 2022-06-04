@@ -13,9 +13,13 @@ class Radio
 
     def topvote(n = 100)
       content = URI.parse(base_url + "stations/topvote/#{n}")
-      JSON[content.read].map do |s|
-        Station.new(s['name'], s['language'], s['url_resolved'])
+      table = {} # uuid => index
+      result = []
+      JSON[content.read].each_with_index do |s, i|
+        table[s['stationuuid']] = i
+        result << Station.new(s['stationuuid'], s['name'], s['language'], s['url_resolved'])
       end
+      [result, table]
     end
   end
 end

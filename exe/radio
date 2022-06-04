@@ -5,9 +5,17 @@ require 'radio'
 
 require 'optparse'
 backend = 'cvlc'
+debug = false
 opt = OptionParser.new
 opt.on('--vlc') { backend = 'cvlc' }
 opt.on('--mpg123') { backend = 'mpg123' }
+opt.on('--debug') { debug = true }
 opt.parse!(ARGV)
 
-Radio.new(backend).launch
+radio = Radio.new(backend, debug: debug)
+begin
+  radio.launch
+rescue StandardError => e
+  radio&.player&.stop_all
+  raise e
+end

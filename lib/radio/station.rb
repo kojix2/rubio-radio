@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class Radio
-  class Station
-    attr_accessor :name, :language, :url, :playing
+  BaseStation = Struct.new(:stationuuid, :name, :language, :url)
 
-    def initialize(name, language, url)
-      @name = name
-      @language = language
-      @url = url
+  class Station < BaseStation
+    attr_accessor :playing
+
+    def initialize(*args, **kwargs)
+      super(*args, **kwargs)
       @playing = false
     end
 
