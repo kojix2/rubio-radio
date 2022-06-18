@@ -9,9 +9,17 @@
 
 ### Requirements:
 
-**[cvlc](https://github.com/videolan/vlc)**
+**[VLC](https://github.com/videolan/vlc)**
 
-On Windows, you also have to add the installed VLC app directory to the PATH environment (e.g. `C:\Program Files (x86)\VideoLAN\VLC`)
+`rubio` uses the `cvlc` command on Linux and `vlc -I rc` on Mac and Windows as the audio playback backend.
+
+On Mac, it is recommended that you install VLC via [Homebrew](https://brew.sh/) to ensure the `vlc` command is added to the PATH environment variable automatically:
+
+```
+brew install vlc
+```
+
+On Windows, install VLC using the [Windows installer](https://www.videolan.org/vlc/download-windows.html), and then add the installed VLC app directory to the PATH environment variable (e.g. `C:\Program Files (x86)\VideoLAN\VLC`) to make the `vlc` command available.
 
 ### Ruby Gem:
 
@@ -25,7 +33,7 @@ gem install rubio-radio
 rubio
 ```
 
-Default player is `cvlc`. But you can use any command line player that can take URL of radio station as its first argument.
+Default player is `cvlc` on Linux and `vlc -I rc` on Mac and Windows. But, you can use any command line player that can take URL of radio station as its first argument.
 
 ```
 rubio --backend mpg123
