@@ -11,6 +11,8 @@
 
 **[cvlc](https://github.com/videolan/vlc)**
 
+On Windows, you also have to add the installed VLC app directory to the PATH environment (e.g. `C:\Program Files (x86)\VideoLAN\VLC`)
+
 ### Ruby Gem:
 
 ```

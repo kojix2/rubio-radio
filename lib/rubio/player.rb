@@ -4,7 +4,7 @@ module Rubio
   class Player
     attr_accessor :backend, :pid, :thr, :status, :history
 
-    def initialize(backend = OS.mac? ? 'vlc -I rc' : 'cvlc')
+    def initialize(backend = OS.linux? ? 'cvlc' : 'vlc -I rc')
       raise unless backend.is_a?(String)
 
       @backend = backend
@@ -42,7 +42,7 @@ module Rubio
     def stop
       return unless alive?
 
-      r = Process.kill(:TERM, pid)
+      r = Process.kill(OS.windows? ? :KILL : :TERM, pid)
       @thr = nil
       @pid = nil
       r
@@ -50,7 +50,7 @@ module Rubio
 
     def stop_all
       @history.each do |pid, thr|
-        Process.kill(:TERM, pid) if thr.alive?
+        Process.kill(OS.windows? ? :KILL : :TERM, pid) if thr.alive?
       end
     end
   end
