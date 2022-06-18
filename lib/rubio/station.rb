@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
 module Rubio
-  BaseStation = Struct.new(:stationuuid, :name, :language, :url)
-
-  class Station < BaseStation
-    attr_accessor :playing
+  Station = Struct.new(:stationuuid, :name, :language, :url, :play) do
+    attr_reader :playing
 
     def initialize(*args, **kwargs)
       super(*args, **kwargs)
-      @playing = false
+      self.playing = false
     end
-
-    def play
-      @playing ? '■' : '▶'
+    
+    def playing=(value)
+      self.play = value ? '■' : '▶'
+      @playing = value
     end
   end
 end

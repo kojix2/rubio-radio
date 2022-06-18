@@ -8,3 +8,5 @@
 /tmp/
 /vendor/
 *.lock
+.gladiator
+.gladiator-scratchpad
