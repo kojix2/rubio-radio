@@ -4,7 +4,7 @@ module Rubio
   class Player
     attr_accessor :backend, :pid, :thr, :status, :history
 
-    def initialize(backend = 'cvlc')
+    def initialize(backend = OS.mac? ? 'vlc -I rc' : 'cvlc')
       raise unless backend.is_a?(String)
 
       @backend = backend
