@@ -62,6 +62,19 @@ module Rubio
     end
 
     def launch
+      menu('Radio') do
+        menu_item('Stop') do
+          on_clicked do
+            stop_uuid(@station_uuid)
+            @station_uuid = nil
+          end
+        end
+        quit_menu_item {
+          on_clicked do
+            @player.stop_all
+          end
+        }
+      end
       window('Rubio', 400, 200) do
         vertical_box do
           horizontal_box do
