@@ -9,7 +9,7 @@ module Rubio
     attr_reader :stations, :player
 
     def initialize(backend, debug: false)
-      @stations_all, @table = RadioBrowser.topvote(1000)
+      @stations_all, @table = RadioBrowser.topvote(500)
       @stations = @stations_all.dup
       @station_uuid = nil
       @player = Player.new(backend)
