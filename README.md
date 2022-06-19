@@ -11,7 +11,7 @@
 
 **[VLC](https://github.com/videolan/vlc)**
 
-`rubio` uses the `cvlc` command on Linux and `vlc -I rc` on Mac and Windows as the audio playback backend.
+`rubio` uses the `vlc -I dummy` as the audio playback backend.
 
 On Mac, it is recommended that you install VLC via [Homebrew](https://brew.sh/) to ensure the `vlc` command is added to the PATH environment variable automatically:
 
@@ -33,10 +33,15 @@ gem install rubio-radio
 rubio
 ```
 
-Default player is `cvlc` on Linux and `vlc -I rc` on Mac and Windows. But, you can use any command line player that can take URL of radio station as its first argument.
+Default player is `vlc -I dummy`. But, you can use any command line player that can take URL of radio station as its first argument.
 
 ```
 rubio --backend mpg123
+```
+
+```
+rubio --vlc              # `vlc -I rc` (interactive command line interface)
+rubio --mpg123           # `rubio --backend mpg123`
 ```
 
 ## LICENSE
