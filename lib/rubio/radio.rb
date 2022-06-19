@@ -69,11 +69,11 @@ module Rubio
             @station_uuid = nil
           end
         end
-        quit_menu_item {
+        quit_menu_item do
           on_clicked do
             @player.stop_all
           end
-        }
+        end
       end
       window('Rubio', 400, 200) do
         vertical_box do

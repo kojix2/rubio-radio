@@ -8,7 +8,7 @@ module Rubio
       super(*args, **kwargs)
       self.playing = false
     end
-    
+
     def playing=(value)
       self.play = value ? '■' : '▶'
       @playing = value
