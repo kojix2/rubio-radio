@@ -4,10 +4,10 @@
 require 'rubio'
 
 require 'optparse'
-backend = OS.linux? ? 'cvlc' : 'vlc -I rc'
+backend = 'vlc -I dummy'
 debug = false
 opt = OptionParser.new
-opt.on('--vlc') { backend = OS.linux? ? 'cvlc' : 'vlc -I rc' }
+opt.on('--vlc') { backend = 'vlc -I rc' }
 opt.on('--mpg123') { backend = 'mpg123' }
 opt.on('--backend CMD') { |b| backend = b }
 opt.on('--debug') { debug = true }
