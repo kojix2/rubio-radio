@@ -36,19 +36,18 @@ module Rubio
       stop_uuid(@station_uuid)
       if @station_uuid == station_uuid
         @station_uuid = nil
-      else
-        play_uuid(station_uuid)
+      elsif (station_uuid)
         @station_uuid = station_uuid
       end
     end
 
-    def play_uuid(station_uuid)
+    def (station_uuid)
       station = uuid_to_station(station_uuid)
       begin
         @player.play(station.url)
       rescue StandardError => e
         message_box(e.message)
-        raise e
+        return false
       end
       station.playing = true
     end
