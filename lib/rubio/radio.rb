@@ -36,12 +36,12 @@ module Rubio
       stop_uuid(@station_uuid)
       if @station_uuid == station_uuid
         @station_uuid = nil
-      elsif (station_uuid)
+      elsif play_uuid(station_uuid)
         @station_uuid = station_uuid
       end
     end
 
-    def (station_uuid)
+    def play_uuid(station_uuid)
       station = uuid_to_station(station_uuid)
       begin
         @player.play(station.url)
