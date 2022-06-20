@@ -44,6 +44,14 @@ rubio --vlc              # `vlc -I rc` (interactive command line interface)
 rubio --mpg123           # `rubio --backend mpg123`
 ```
 
+## Links
+
+* [Ruby](https://github.com/ruby/ruby)
+  * spawn
+* [Radio Browser](https://www.radio-browser.info/)
+  * [Radio Browser API](https://de1.api.radio-browser.info/)
+* [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui)
+
 ## LICENSE
 
 MIT
