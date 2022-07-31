@@ -1,7 +1,17 @@
 # rubio-radio
 [![Gem Version](https://badge.fury.io/rb/rubio-radio.svg)](https://badge.fury.io/rb/rubio-radio)
 
-![img](https://user-images.githubusercontent.com/5798442/171986696-24bedc38-3811-4c62-a5ad-89c09d015c8a.png)
+Linux
+
+![linux screenshot](screenshots/rubio-radio-linux.png)
+
+Mac
+
+![mac screenshot](screenshots/rubio-radio-mac.png)
+
+Windows
+
+![windows screenshot](screenshots/rubio-radio-windows.png)
 
 :bowtie: Alpha
 
@@ -29,8 +39,16 @@ gem install rubio-radio
 
 ## Usage
 
+Run with this command:
+
 ```
 rubio
+```
+
+The top 10,000 [Radio Browser](https://www.radio-browser.info/) stations are displayed by default. But, you can customize the count (note that currently, there are only about 32,000 [Radio Browser](https://www.radio-browser.info/) stations total).
+
+```
+rubio --count 20000
 ```
 
 Default player is `vlc -I dummy`. But, you can use any command line player that can take URL of radio station as its first argument.
@@ -39,9 +57,18 @@ Default player is `vlc -I dummy`. But, you can use any command line player that 
 rubio --backend mpg123
 ```
 
+Learn more about `rubio` options:
+
+```
+rubio --help
+```
+
+Examples:
+
 ```
 rubio --vlc              # `vlc -I rc` (interactive command line interface)
 rubio --mpg123           # `rubio --backend mpg123`
+rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 ```
 
 ## Links
@@ -51,6 +78,10 @@ rubio --mpg123           # `rubio --backend mpg123`
 * [Radio Browser](https://www.radio-browser.info/)
   * [Radio Browser API](https://de1.api.radio-browser.info/)
 * [Glimmer DSL for LibUI](https://github.com/AndyObtiva/glimmer-dsl-libui)
+
+## Change Log
+
+[CHANGELOG.md](CHANGELOG.md)
 
 ## LICENSE
 

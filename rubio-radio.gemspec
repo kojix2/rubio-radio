@@ -18,5 +18,5 @@ Gem::Specification.new do |spec|
   spec.executables   = %w[rubio]
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'glimmer-dsl-libui'
+  spec.add_runtime_dependency 'glimmer-dsl-libui', '0.5.16'
 end

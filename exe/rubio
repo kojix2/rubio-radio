@@ -5,11 +5,13 @@ require 'rubio'
 
 require 'optparse'
 backend = 'vlc -I dummy'
+count = 10_000
 debug = false
 opt = OptionParser.new
 opt.on('--vlc') { backend = 'vlc -I rc' }
 opt.on('--mpg123') { backend = 'mpg123' }
 opt.on('--backend CMD') { |b| backend = b }
+opt.on('--count RADIO_STATION_COUNT') { |c| count = c }
 opt.on('--debug') { debug = true }
 opt.on('--help') do
   puts opt
@@ -21,7 +23,7 @@ opt.on('--version') do
 end
 opt.parse!(ARGV)
 
-radio = Rubio::Radio.new(backend, debug: debug)
+radio = Rubio::Radio.new(backend, radio_station_count: count, debug: debug)
 begin
   radio.launch
 rescue StandardError => e
