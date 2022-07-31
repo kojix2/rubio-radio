@@ -8,8 +8,8 @@ module Rubio
 
     attr_reader :stations, :player
 
-    def initialize(backend, debug: false)
-      @stations_all, @table = RadioBrowser.topvote(500)
+    def initialize(backend, radio_station_count: 10_000, debug: false)
+      @stations_all, @table = RadioBrowser.topvote(radio_station_count)
       @stations = @stations_all.dup
       @station_uuid = nil
       @player = Player.new(backend)
@@ -29,10 +29,8 @@ module Rubio
       end
     end
 
-    def selected_station_at(idx)
-      raise unless idx.is_a?(Integer)
-
-      station_uuid = stations[idx].stationuuid
+    def select_station(station)
+      station_uuid = station.stationuuid
       stop_uuid(@station_uuid)
       if @station_uuid == station_uuid
         @station_uuid = nil
@@ -74,34 +72,24 @@ module Rubio
           end
         end
       end
-      window('Rubio', 400, 200) do
+      window('Rubio', 400, OS.linux? ? 630 : ((OS.mac? && OS.host_cpu == 'arm64') ? 590 : 500)) do
         vertical_box do
           horizontal_box do
-            stretchy false
-            search_entry do |se|
-              on_changed do
-                filter_value = se.text
-                if filter_value.empty?
-                  @stations.replace @stations_all.dup
-                else
-                  @stations.replace(@stations_all.filter do |row_data|
-                    row_data.name.downcase.include?(filter_value.downcase)
-                  end)
-                end
-              end
-            end
-          end
-          horizontal_box do
-            table do
-              button_column('Play') do
-                on_clicked do |row|
-                  selected_station_at(row)
-                end
-              end
-              text_column('name')
-              text_column('language')
-              cell_rows <= [self, :stations]
-            end
+            @station_table = refined_table(
+              table_columns: {
+                'Play'     => { button: {
+                                  on_clicked: ->(row) {
+                                    station = @station_table.paginated_model_array[row]
+                                    select_station(station)
+                                  }
+                                }
+                              },
+                'name'     => :text,
+                'language' => :text,
+              },
+              model_array: stations,
+              per_page: 20,
+            )
           end
         end
         on_closing do
