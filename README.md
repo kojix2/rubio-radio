@@ -85,4 +85,4 @@ rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 
 ## LICENSE
 
-MIT
+[MIT](LICENSE.txt)
