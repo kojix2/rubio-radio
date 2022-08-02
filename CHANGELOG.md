@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.5
+
+- Upgrade to glimmer-dsl-libui v0.5.17
+
 ## 0.0.4
 
 - Upgrade to glimmer-dsl-libui v0.5.16 to use `refined_table` custom control
