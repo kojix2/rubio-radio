@@ -63,6 +63,21 @@ Learn more about `rubio` options:
 rubio --help
 ```
 
+```
+Usage: rubio [options]
+        --vlc
+        --mpg123
+        --backend CMD
+        --count RADIO_STATION_COUNT
+        --per-page ROWS_PER_PAGE
+        --width WINDOW_WIDTH
+        --height WINDOW_HEIGHT
+        --debug
+        --no-menu
+        --help
+        --version
+```
+
 Examples:
 
 ```
@@ -70,6 +85,14 @@ rubio --vlc              # `vlc -I rc` (interactive command line interface)
 rubio --mpg123           # `rubio --backend mpg123`
 rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 ```
+
+Small Screen Example:
+
+```
+rubio --per-page 6 --no-menu
+```
+
+![linux screenshot](screenshots/rubio-radio-linux-example-small.png)
 
 ## Links
 
