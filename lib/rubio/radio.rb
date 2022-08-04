@@ -8,11 +8,13 @@ module Rubio
 
     attr_reader :stations, :player
 
-    def initialize(backend, radio_station_count: 10_000, debug: false)
+    def initialize(backend, radio_station_count: 10_000, debug: false, initial_width: nil, initial_height: nil)
       @stations_all, @table = RadioBrowser.topvote(radio_station_count)
       @stations = @stations_all.dup
       @station_uuid = nil
       @player = Player.new(backend)
+      @initial_width = (initial_width || 400).to_i
+      @initial_height = (initial_height || (OS.linux? ? 630 : ((OS.mac? && OS.host_cpu == 'arm64') ? 590 : 500))).to_i
 
       monitor_thread(debug)
     end
@@ -72,7 +74,7 @@ module Rubio
           end
         end
       end
-      window('Rubio', 400, OS.linux? ? 630 : ((OS.mac? && OS.host_cpu == 'arm64') ? 590 : 500)) do
+      window('Rubio', @initial_width, @initial_height) do
         vertical_box do
           horizontal_box do
             @station_table = refined_table(

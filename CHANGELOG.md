@@ -3,6 +3,8 @@
 ## 0.0.5
 
 - Upgrade to glimmer-dsl-libui v0.5.17
+- Command option `--width` for initial window width
+- Command option `--height` for initial window height
 
 ## 0.0.4
 
