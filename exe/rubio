@@ -14,6 +14,7 @@ opt.on('--count RADIO_STATION_COUNT') { |c| options[:radio_station_count] = c }
 opt.on('--width WINDOW_WIDTH') { |w| options[:initial_width] = w }
 opt.on('--height WINDOW_HEIGHT') { |h| options[:initial_height] = h }
 opt.on('--debug') { options[:debug] = true }
+opt.on('--no-menu') { options[:visible_menu] = false }
 opt.on('--help') do
   puts opt
   exit
