@@ -26,4 +26,9 @@ opt.on('--version') do
 end
 opt.parse!(ARGV)
 
-Rubio::Radio.launch(**options)
+begin
+  Rubio::Radio.launch(**options)
+rescue StandardError => e
+  Rubio::Radio.launched_application&.player&.stop_all
+  raise e
+end
