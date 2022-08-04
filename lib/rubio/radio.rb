@@ -4,11 +4,15 @@ require 'glimmer-dsl-libui'
 
 module Rubio
   class Radio
-    include Glimmer
+    include Glimmer::LibUI::Application
 
+    options :backend, :initial_width, :initial_height
+    option :radio_station_count, default: 10_000
+    option :debug, default: false
+    
     attr_reader :stations, :player
 
-    def initialize(backend, radio_station_count: 10_000, debug: false, initial_width: nil, initial_height: nil)
+    before_body do
       @stations_all, @table = RadioBrowser.topvote(radio_station_count)
       @stations = @stations_all.dup
       @station_uuid = nil
@@ -60,7 +64,7 @@ module Rubio
       station.playing = false
     end
 
-    def launch
+    body do
       menu('Radio') do
         menu_item('Stop') do
           on_clicked do
@@ -68,12 +72,14 @@ module Rubio
             @station_uuid = nil
           end
         end
+        
         quit_menu_item do
           on_clicked do
             @player.stop_all
           end
         end
       end
+      
       window('Rubio', @initial_width, @initial_height) do
         vertical_box do
           horizontal_box do
@@ -94,10 +100,11 @@ module Rubio
             )
           end
         end
+        
         on_closing do
           @player.stop_all
         end
-      end.show
+      end
     end
 
     private
