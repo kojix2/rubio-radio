@@ -9,6 +9,7 @@ module Rubio
     options :backend, :initial_width, :initial_height
     option :radio_station_count, default: 10_000
     option :debug, default: false
+    option :visible_menu, default: true
     
     attr_reader :stations, :player
 
@@ -33,6 +34,75 @@ module Rubio
         @station_uuid = nil
         true
       end
+    end
+
+    body do
+      radio_menu_bar
+      
+      window('Rubio', @initial_width, @initial_height) do
+        vertical_box do
+          horizontal_box do
+            @station_table = refined_table(
+              table_columns: {
+                'Play'     => { button: {
+                                  on_clicked: ->(row) {
+                                    station = @station_table.paginated_model_array[row]
+                                    select_station(station)
+                                  }
+                                }
+                              },
+                'name'     => :text,
+                'language' => :text,
+              },
+              model_array: stations,
+              per_page: 20,
+            )
+          end
+        end
+        
+        on_closing do
+          @player.stop_all
+        end
+      end
+    end
+    
+    def radio_menu_bar
+      return unless OS.mac? || visible_menu
+      
+      menu('Radio') do
+        menu_item('Stop') do
+          on_clicked do
+            stop_uuid(@station_uuid)
+            @station_uuid = nil
+          end
+        end
+        
+        about_menu_item do
+          on_clicked do
+            about_message_box
+          end
+        end
+        
+        quit_menu_item do
+          on_clicked do
+            @player.stop_all
+          end
+        end
+      end
+      
+      menu('Help') do
+        menu_item('About') do
+          on_clicked do
+            about_message_box
+          end
+        end
+      end
+    end
+    
+    def about_message_box
+      license = File.read(File.expand_path('../../LICENSE.txt', __dir__)) rescue ''
+      product = "rubio-radio #{Rubio::VERSION}"
+      message_box(product, "#{product}\n\n#{license}")
     end
 
     def select_station(station)
@@ -62,49 +132,6 @@ module Rubio
       station = uuid_to_station(station_uuid)
       @player.stop
       station.playing = false
-    end
-
-    body do
-      menu('Radio') do
-        menu_item('Stop') do
-          on_clicked do
-            stop_uuid(@station_uuid)
-            @station_uuid = nil
-          end
-        end
-        
-        quit_menu_item do
-          on_clicked do
-            @player.stop_all
-          end
-        end
-      end
-      
-      window('Rubio', @initial_width, @initial_height) do
-        vertical_box do
-          horizontal_box do
-            @station_table = refined_table(
-              table_columns: {
-                'Play'     => { button: {
-                                  on_clicked: ->(row) {
-                                    station = @station_table.paginated_model_array[row]
-                                    select_station(station)
-                                  }
-                                }
-                              },
-                'name'     => :text,
-                'language' => :text,
-              },
-              model_array: stations,
-              per_page: 20,
-            )
-          end
-        end
-        
-        on_closing do
-          @player.stop_all
-        end
-      end
     end
 
     private
