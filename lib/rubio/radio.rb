@@ -10,6 +10,7 @@ module Rubio
     option :radio_station_count, default: 10_000
     option :debug, default: false
     option :visible_menu, default: true
+    option :table_per_page, default: 20
     
     attr_reader :stations, :player
 
@@ -55,7 +56,7 @@ module Rubio
                 'language' => :text,
               },
               model_array: stations,
-              per_page: 20,
+              per_page: table_per_page.to_i,
             )
           end
         end

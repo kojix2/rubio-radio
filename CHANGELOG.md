@@ -5,6 +5,7 @@
 - Upgrade to glimmer-dsl-libui v0.5.17
 - Command option `--width` for initial window width
 - Command option `--height` for initial window height
+- Command option `--per-page` for number of rows per page to display
 - Command option `--no-menu` to remove the top menu bar and save screen space when not needed (on Mac it is always on because the menu bar does not take application screen space)
 - Help menu About menu item to display message box with application license
 
