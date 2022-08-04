@@ -2,7 +2,7 @@
 
 ## 0.0.4
 
-- Upgrade to glimmer-dsl-libui v0.5.17
+- Upgrade to glimmer-dsl-libui v0.5.18
 - Replace `table` with new `refined_table` having pagination and filtering support across all columns (including language column)
 - Request the top 10,000 radio stations upon starting the app
 - Command option `--count` for configuring count of top radio stations (`10_000` by default)
