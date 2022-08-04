@@ -20,21 +20,9 @@ module Rubio
       @station_uuid = nil
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
-      @initial_height = (initial_height || (OS.linux? ? 630 : ((OS.mac? && OS.host_cpu == 'arm64') ? 590 : 500))).to_i
+      @initial_height = (initial_height || calculate_initial_height).to_i
 
       monitor_thread(debug)
-    end
-
-    def monitor_thread(debug)
-      Glimmer::LibUI.timer(1) do
-        p @player.history if debug
-        next if @station_uuid.nil? || @player.alive?
-
-        message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
-        stop_uuid(@station_uuid)
-        @station_uuid = nil
-        true
-      end
     end
 
     body do
@@ -78,9 +66,11 @@ module Rubio
           end
         end
         
-        about_menu_item do
-          on_clicked do
-            about_message_box
+        if OS.mac?
+          about_menu_item do
+            on_clicked do
+              about_message_box
+            end
           end
         end
         
@@ -136,7 +126,31 @@ module Rubio
     end
 
     private
+    
+    def calculate_initial_height
+      if OS.linux?
+        107 + (visible_menu ? 26 : 0) + 24*table_per_page.to_i
+      elsif OS.mac? && OS.host_cpu == 'arm64'
+        90 + 24*table_per_page.to_i
+      elsif OS.mac?
+        85 + 19*table_per_page.to_i
+      else # Windows
+        95 + 19*table_per_page.to_i
+      end
+    end
 
+    def monitor_thread(debug)
+      Glimmer::LibUI.timer(1) do
+        p @player.history if debug
+        next if @station_uuid.nil? || @player.alive?
+
+        message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
+        stop_uuid(@station_uuid)
+        @station_uuid = nil
+        true
+      end
+    end
+    
     def uuid_to_station(uuid)
       idx = @table[uuid]
       @stations_all[idx]
