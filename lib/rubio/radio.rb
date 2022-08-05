@@ -12,7 +12,7 @@ module Rubio
     option :visible_menu, default: true
     option :show_page_count, default: false
     option :table_per_page, default: 20
-    
+
     attr_reader :stations, :player
 
     before_body do
@@ -28,38 +28,37 @@ module Rubio
 
     body do
       radio_menu_bar
-      
+
       window('Rubio', @initial_width, @initial_height) do
         vertical_box do
           horizontal_box do
             @station_table = refined_table(
               table_columns: {
-                'Play'     => { button: {
-                                  on_clicked: ->(row) {
-                                    station = @station_table.paginated_model_array[row]
-                                    select_station(station)
-                                  }
-                                }
-                              },
-                'name'     => :text,
-                'language' => :text,
+                'Play' => { button: {
+                  on_clicked: lambda { |row|
+                    station = @station_table.paginated_model_array[row]
+                    select_station(station)
+                  }
+                } },
+                'name' => :text,
+                'language' => :text
               },
               model_array: stations,
               per_page: table_per_page.to_i,
-              visible_page_count: show_page_count,
+              visible_page_count: show_page_count
             )
           end
         end
-        
+
         on_closing do
           @player.stop_all
         end
       end
     end
-    
+
     def radio_menu_bar
       return unless OS.mac? || visible_menu
-      
+
       menu('Radio') do
         menu_item('Stop') do
           on_clicked do
@@ -67,7 +66,7 @@ module Rubio
             @station_uuid = nil
           end
         end
-        
+
         if OS.mac?
           about_menu_item do
             on_clicked do
@@ -75,14 +74,14 @@ module Rubio
             end
           end
         end
-        
+
         quit_menu_item do
           on_clicked do
             @player.stop_all
           end
         end
       end
-      
+
       menu('Help') do
         menu_item('About') do
           on_clicked do
@@ -91,9 +90,13 @@ module Rubio
         end
       end
     end
-    
+
     def about_message_box
-      license = File.read(File.expand_path('../../LICENSE.txt', __dir__)) rescue ''
+      license = begin
+        File.read(File.expand_path('../../LICENSE.txt', __dir__))
+      rescue StandardError
+        ''
+      end
       product = "rubio-radio #{Rubio::VERSION}"
       message_box(product, "#{product}\n\n#{license}")
     end
@@ -128,16 +131,16 @@ module Rubio
     end
 
     private
-    
+
     def calculate_initial_height
       if OS.linux?
-        107 + (visible_menu ? 26 : 0) + 24*table_per_page.to_i
+        107 + (visible_menu ? 26 : 0) + 24 * table_per_page.to_i
       elsif OS.mac? && OS.host_cpu == 'arm64'
-        90 + 24*table_per_page.to_i
+        90 + 24 * table_per_page.to_i
       elsif OS.mac?
-        85 + 19*table_per_page.to_i
+        85 + 19 * table_per_page.to_i
       else # Windows
-        95 + 19*table_per_page.to_i
+        95 + 19 * table_per_page.to_i
       end
     end
 
@@ -152,7 +155,7 @@ module Rubio
         true
       end
     end
-    
+
     def uuid_to_station(uuid)
       idx = @table[uuid]
       @stations_all[idx]
