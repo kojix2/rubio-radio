@@ -5,7 +5,7 @@ require_relative 'lib/rubio/version'
 Gem::Specification.new do |spec|
   spec.name          = 'rubio-radio'
   spec.version       = Rubio::VERSION
-  spec.authors       = ['kojix2']
+  spec.authors       = ['kojix2', 'Andy Maleh']
   spec.email         = ['2xijok@gmail.com']
 
   spec.summary       = 'Rubio - A simple radio player'
