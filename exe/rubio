@@ -7,25 +7,32 @@ require 'optparse'
 options = { backend: 'vlc -I dummy' }
 
 opt = OptionParser.new
-opt.on('--vlc') { options[:backend] = 'vlc -I rc' }
-opt.on('--mpg123') { options[:backend] = 'mpg123' }
-opt.on('--backend CMD') { |b| options[:backend] = b }
-opt.on('--count RADIO_STATION_COUNT') { |c| options[:radio_station_count] = c }
-opt.on('--per-page ROWS_PER_PAGE') { |c| options[:table_per_page] = c }
-opt.on('--page-count') { |_c| options[:show_page_count] = true }
-opt.on('--width WINDOW_WIDTH') { |w| options[:initial_width] = w }
-opt.on('--height WINDOW_HEIGHT') { |h| options[:initial_height] = h }
-opt.on('--debug') { options[:debug] = true }
-opt.on('--no-menu') { options[:visible_menu] = false }
-opt.on('--help') do
+opt.summary_width = 23
+opt.on('--vlc', 'use VLC media player on the backend [default]') { options[:backend] = 'vlc -I rc' }
+opt.on('--mpg123', 'Use mpg123 on the backend') { options[:backend] = 'mpg123' }
+opt.on('--backend STR', String, 'command to use as back-end player') { |b| options[:backend] = b }
+opt.on('--count INT', Numeric, 'number of stations to fetch from radio-browser') { |c| options[:radio_station_count] = c }
+opt.on('--per-page INT', Numeric, 'number of stations per page') { |c| options[:table_per_page] = c }
+opt.on('--[no-]page-count', TrueClass, 'show/hide page count') { |b| options[:show_page_count] = b }
+opt.on('--width INT', Numeric, 'main window width') { |w| options[:initial_width] = w }
+opt.on('--height INT', Numeric, 'main window height') { |h| options[:initial_height] = h }
+opt.on('--[no-]menu', TrueClass, 'show/hide menu') { |b| options[:visible_menu] = b }
+opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
+opt.on('--help', 'show this help message') do
   puts opt
   exit
 end
-opt.on('--version') do
+opt.on('--version', 'Show the rubio version number') do
   puts Rubio::VERSION
   exit
 end
-opt.parse!(ARGV)
+
+begin
+  opt.parse!(ARGV)
+rescue OptionParser::InvalidOption, OptionParser::AmbiguousOption
+  puts opt
+  exit
+end
 
 begin
   Rubio::Radio.launch(**options)
