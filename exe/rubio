@@ -9,8 +9,8 @@ options = { backend: 'vlc -I dummy' }
 opt = OptionParser.new
 opt.summary_width = 23
 opt.on('--vlc', 'use VLC media player on the backend [default]') { options[:backend] = 'vlc -I rc' }
-opt.on('--mpg123', 'Use mpg123 on the backend') { options[:backend] = 'mpg123' }
-opt.on('--backend STR', String, 'command to use as back-end player') { |b| options[:backend] = b }
+opt.on('--mpg123', 'use mpg123 on the backend') { options[:backend] = 'mpg123' }
+opt.on('--backend STR', String, 'command to use as backend player') { |b| options[:backend] = b }
 opt.on('--count INT', Numeric, 'number of stations to fetch from radio-browser') { |c| options[:radio_station_count] = c }
 opt.on('--per-page INT', Numeric, 'number of stations per page') { |c| options[:table_per_page] = c }
 opt.on('--[no-]page-count', TrueClass, 'show/hide page count') { |b| options[:show_page_count] = b }
@@ -22,7 +22,7 @@ opt.on('--help', 'show this help message') do
   puts opt
   exit
 end
-opt.on('--version', 'Show the rubio version number') do
+opt.on('--version', 'show the rubio version number') do
   puts Rubio::VERSION
   exit
 end
