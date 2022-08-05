@@ -65,18 +65,18 @@ rubio --help
 
 ```
 Usage: rubio [options]
-        --vlc
-        --mpg123
-        --backend CMD
-        --count RADIO_STATION_COUNT
-        --per-page ROWS_PER_PAGE
-        --page-count
-        --width WINDOW_WIDTH
-        --height WINDOW_HEIGHT
-        --debug
-        --no-menu
-        --help
-        --version
+        --vlc               use VLC media player on the backend [default]
+        --mpg123            Use mpg123 on the backend
+        --backend STR       command to use as backend player
+        --count INT         number of stations to fetch from radio-browser
+        --per-page INT      number of stations per page
+        --[no-]page-count   show/hide page count
+        --width INT         main window width
+        --height INT        main window height
+        --[no-]menu         show/hide menu
+        --debug             output status of monitored threads
+        --help              show this help message
+        --version           Show the rubio version number
 ```
 
 Examples:
