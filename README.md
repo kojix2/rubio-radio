@@ -65,14 +65,14 @@ rubio --help
 
 ```
 Usage: rubio [options]
-        --vlc STR           use VLC interface STR on the backend [dummy]
+        --vlc [STR]         use VLC interface STR on the backend [dummy]
         --mpg123            use mpg123 on the backend
-        --backend STR       command to use as backend player ['vlc -I dummy']
-        --count INT         number of stations to fetch from radio-browser [10000]
+    -b, --backend STR       command to use as backend player ['vlc -I dummy']
+    -c, --count INT         number of stations to fetch from radio-browser [10000]
         --per-page INT      number of stations per page [20]
         --[no-]page-count   show/hide page count
-        --width INT         main window width
-        --height INT        main window height
+    -w, --width INT         main window width
+    -h, --height INT        main window height
         --[no-]menu         show/hide menu
         --debug             output status of monitored threads
         --help              show this help message

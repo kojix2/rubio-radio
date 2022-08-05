@@ -10,12 +10,12 @@ opt = OptionParser.new
 opt.summary_width = 23
 opt.on('--vlc [STR]', 'use VLC interface STR on the backend [dummy]') { |i| i ||= 'dummy'; options[:backend] = "vlc -I #{i}" }
 opt.on('--mpg123', 'use mpg123 on the backend') { options[:backend] = 'mpg123' }
-opt.on('--backend STR', String, 'command to use as backend player [\'vlc -I dummy\']') { |b| options[:backend] = b }
-opt.on('--count INT', Numeric, 'number of stations to fetch from radio-browser [10000]') { |c| options[:radio_station_count] = c }
+opt.on('-b', '--backend STR', String, 'command to use as backend player [\'vlc -I dummy\']') { |b| options[:backend] = b }
+opt.on('-c', '--count INT', Numeric, 'number of stations to fetch from radio-browser [10000]') { |c| options[:radio_station_count] = c }
 opt.on('--per-page INT', Numeric, 'number of stations per page [20]') { |c| options[:table_per_page] = c }
 opt.on('--[no-]page-count', TrueClass, 'show/hide page count') { |b| options[:show_page_count] = b }
-opt.on('--width INT', Numeric, 'main window width') { |w| options[:initial_width] = w }
-opt.on('--height INT', Numeric, 'main window height') { |h| options[:initial_height] = h }
+opt.on('-w', '--width INT', Numeric, 'main window width') { |w| options[:initial_width] = w }
+opt.on('-h', '--height INT', Numeric, 'main window height') { |h| options[:initial_height] = h }
 opt.on('--[no-]menu', TrueClass, 'show/hide menu') { |b| options[:visible_menu] = b }
 opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
 opt.on('--help', 'show this help message') do
