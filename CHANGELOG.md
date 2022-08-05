@@ -7,6 +7,7 @@
 - Request the top 10,000 radio stations upon starting the app
 - Command option `--count` for configuring count of top radio stations (`10_000` by default)
 - Command option `--per-page` for number of rows per page to display
+- Command option `--page-count` for displaying page count ("of PAGE_COUNT pages")
 - Command option `--width` for initial window width
 - Command option `--height` for initial window height
 - Command option `--no-menu` to remove the top menu bar and save screen space when not needed (on Mac it is always on because the menu bar does not take application screen space)

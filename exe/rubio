@@ -12,6 +12,7 @@ opt.on('--mpg123') { options[:backend] = 'mpg123' }
 opt.on('--backend CMD') { |b| options[:backend] = b }
 opt.on('--count RADIO_STATION_COUNT') { |c| options[:radio_station_count] = c }
 opt.on('--per-page ROWS_PER_PAGE') { |c| options[:table_per_page] = c }
+opt.on('--page-count') { |c| options[:show_page_count] = true }
 opt.on('--width WINDOW_WIDTH') { |w| options[:initial_width] = w }
 opt.on('--height WINDOW_HEIGHT') { |h| options[:initial_height] = h }
 opt.on('--debug') { options[:debug] = true }

@@ -70,6 +70,7 @@ Usage: rubio [options]
         --backend CMD
         --count RADIO_STATION_COUNT
         --per-page ROWS_PER_PAGE
+        --page-count
         --width WINDOW_WIDTH
         --height WINDOW_HEIGHT
         --debug
@@ -92,7 +93,15 @@ Small Screen Example:
 rubio --per-page 6 --no-menu
 ```
 
-![linux screenshot](screenshots/rubio-radio-linux-example-small.png)
+![small screen linux screenshot](screenshots/rubio-radio-linux-example-small.png)
+
+Page Count Example:
+
+```
+rubio --page-count
+```
+
+![page count mac screenshot](screenshots/rubio-radio-mac-example-page-count.png)
 
 ## Links
 
