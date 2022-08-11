@@ -13,12 +13,11 @@ module Rubio
     option :show_page_count, default: false
     option :table_per_page, default: 20
 
-    attr_reader :stations, :player, :station_uuid
+    attr_reader :stations, :player
     attr_accessor :current_station
 
     before_body do
-      @stations_all, @table = RadioBrowser.topvote(radio_station_count)
-      @stations = @stations_all.dup
+      @stations = RadioBrowser.topvote(radio_station_count)
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
       @initial_height = (initial_height || calculate_initial_height).to_i
@@ -69,9 +68,10 @@ module Rubio
 
       menu('Radio') do
         menu_item('Stop') do
+          enabled <= [self, 'current_station', on_read: ->(value) {!!value}]
+          
           on_clicked do
             stop_station
-            self.station_uuid = nil
           end
         end
 
@@ -129,19 +129,12 @@ module Rubio
       message_box(product, "#{product}\n\n#{license}")
     end
     
-    def station_uuid=(value)
-      value.tap do
-        @station_uuid = value
-        self.current_station = uuid_to_station(@station_uuid)
-      end
-    end
-    
     def select_station(station)
       playing = station.playing
       stop_station
-      self.station_uuid = station.stationuuid
+      self.current_station = station
       if playing
-        self.station_uuid = nil
+        self.current_station = nil
       else
         play_station
       end
@@ -157,7 +150,7 @@ module Rubio
         current_station.playing = true
       rescue StandardError => e
         message_box(e.message)
-        self.station_uuid = nil
+        self.current_station = nil
       end
     end
 
@@ -166,6 +159,7 @@ module Rubio
 
       @player.stop
       current_station.playing = false
+      self.current_station = nil
     end
 
     private
@@ -185,19 +179,12 @@ module Rubio
     def monitor_thread(debug)
       Glimmer::LibUI.timer(1) do
         p @player.history if debug
-        next if @station_uuid.nil? || @player.alive?
+        next if current_station.nil? || @player.alive?
 
         message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
         stop_station
-        self.station_uuid = nil
         true
       end
-    end
-
-    def uuid_to_station(uuid)
-      return if uuid.nil?
-      idx = @table[uuid]
-      @stations_all[idx]
     end
   end
 end
