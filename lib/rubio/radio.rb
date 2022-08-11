@@ -9,7 +9,7 @@ module Rubio
     options :backend, :initial_width, :initial_height
     option :radio_station_count, default: 10_000
     option :debug, default: false
-    option :visible_menu, default: true
+    option :show_menu, default: true
     option :show_page_count, default: false
     option :table_per_page, default: 20
 
@@ -22,7 +22,9 @@ module Rubio
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
       @initial_height = (initial_height || calculate_initial_height).to_i
-
+    end
+    
+    after_body do
       monitor_thread(debug)
     end
 
@@ -57,7 +59,7 @@ module Rubio
     end
 
     def radio_menu_bar
-      return unless OS.mac? || visible_menu
+      return unless OS.mac? || show_menu
 
       menu('Radio') do
         menu_item('Stop') do
@@ -100,7 +102,7 @@ module Rubio
       product = "rubio-radio #{Rubio::VERSION}"
       message_box(product, "#{product}\n\n#{license}")
     end
-
+    
     def select_station(station)
       station_uuid = station.stationuuid
       stop_uuid(@station_uuid)
@@ -134,7 +136,7 @@ module Rubio
 
     def calculate_initial_height
       if OS.linux?
-        107 + (visible_menu ? 26 : 0) + 24 * table_per_page.to_i
+        107 + (show_menu ? 26 : 0) + 24 * table_per_page.to_i
       elsif OS.mac? && OS.host_cpu == 'arm64'
         90 + 24 * table_per_page.to_i
       elsif OS.mac?

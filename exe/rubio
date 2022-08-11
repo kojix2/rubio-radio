@@ -23,7 +23,7 @@ opt.on('--per-page INT', Numeric, 'number of stations per page [20]') { |c| opti
 opt.on('--[no-]page-count', TrueClass, 'show/hide page count') { |b| options[:show_page_count] = b }
 opt.on('-w', '--width INT', Numeric, 'main window width') { |w| options[:initial_width] = w }
 opt.on('-h', '--height INT', Numeric, 'main window height') { |h| options[:initial_height] = h }
-opt.on('--[no-]menu', TrueClass, 'show/hide menu') { |b| options[:visible_menu] = b }
+opt.on('--[no-]menu', TrueClass, 'show/hide menu') { |b| options[:show_menu] = b }
 opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
 opt.on('--help', 'show this help message') do
   puts opt
