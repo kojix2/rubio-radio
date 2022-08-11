@@ -13,12 +13,13 @@ module Rubio
     option :show_page_count, default: false
     option :table_per_page, default: 20
 
-    attr_reader :stations, :player
+    attr_reader :stations, :player, :station_uuid
+    attr_accessor :current_station
 
     before_body do
       @stations_all, @table = RadioBrowser.topvote(radio_station_count)
       @stations = @stations_all.dup
-      @station_uuid = nil
+      self.station_uuid = nil
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
       @initial_height = (initial_height || calculate_initial_height).to_i
@@ -40,6 +41,12 @@ module Rubio
                   on_clicked: lambda { |row|
                     station = @station_table.paginated_model_array[row]
                     select_station(station)
+                  }
+                } },
+                'Bookmark' => { button: {
+                  on_clicked: lambda { |row|
+                    station = @station_table.paginated_model_array[row]
+                    toggle_bookmarked_station(station)
                   }
                 } },
                 'name' => :text,
@@ -65,10 +72,30 @@ module Rubio
         menu_item('Stop') do
           on_clicked do
             stop_uuid(@station_uuid)
-            @station_uuid = nil
+            self.station_uuid = nil
           end
         end
 
+        separator_menu_item
+        
+        menu_item('Bookmark') do
+          enabled <= [self, 'current_station.bookmarked', on_read: :!]
+          
+          on_clicked do
+            toggle_bookmarked_station(current_station) if current_station
+          end
+        end
+
+        menu_item('Unbookmark') do
+          enabled <= [self, 'current_station.bookmarked']
+          
+          on_clicked do
+            toggle_bookmarked_station(current_station) if current_station
+          end
+        end
+
+        separator_menu_item
+        
         if OS.mac?
           about_menu_item do
             on_clicked do
@@ -103,14 +130,25 @@ module Rubio
       message_box(product, "#{product}\n\n#{license}")
     end
     
+    def station_uuid=(value)
+      value.tap do
+        @station_uuid = value
+        self.current_station = uuid_to_station(@station_uuid)
+      end
+    end
+    
     def select_station(station)
       station_uuid = station.stationuuid
       stop_uuid(@station_uuid)
-      if @station_uuid == station_uuid
-        @station_uuid = nil
+      if self.station_uuid == station_uuid
+        self.station_uuid = nil
       elsif play_uuid(station_uuid)
-        @station_uuid = station_uuid
+        self.station_uuid = station_uuid
       end
+    end
+    
+    def toggle_bookmarked_station(station)
+      station.bookmarked = !station.bookmarked
     end
 
     def play_uuid(station_uuid)
@@ -153,12 +191,13 @@ module Rubio
 
         message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
         stop_uuid(@station_uuid)
-        @station_uuid = nil
+        self.station_uuid = nil
         true
       end
     end
 
     def uuid_to_station(uuid)
+      return unless uuid
       idx = @table[uuid]
       @stations_all[idx]
     end
