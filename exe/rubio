@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'puts_debuggerer' if ENV['PD'].to_s.downcase == 'true'
 require 'rubio'
 require 'optparse'
 
