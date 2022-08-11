@@ -19,7 +19,6 @@ module Rubio
     before_body do
       @stations_all, @table = RadioBrowser.topvote(radio_station_count)
       @stations = @stations_all.dup
-      self.station_uuid = nil
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
       @initial_height = (initial_height || calculate_initial_height).to_i
@@ -71,7 +70,7 @@ module Rubio
       menu('Radio') do
         menu_item('Stop') do
           on_clicked do
-            stop_uuid(@station_uuid)
+            stop_station
             self.station_uuid = nil
           end
         end
@@ -138,12 +137,13 @@ module Rubio
     end
     
     def select_station(station)
-      station_uuid = station.stationuuid
-      stop_uuid(@station_uuid)
-      if self.station_uuid == station_uuid
+      playing = station.playing
+      stop_station
+      self.station_uuid = station.stationuuid
+      if playing
         self.station_uuid = nil
-      elsif play_uuid(station_uuid)
-        self.station_uuid = station_uuid
+      else
+        play_station
       end
     end
     
@@ -151,23 +151,21 @@ module Rubio
       station.bookmarked = !station.bookmarked
     end
 
-    def play_uuid(station_uuid)
-      station = uuid_to_station(station_uuid)
+    def play_station
       begin
-        @player.play(station.url)
+        @player.play(current_station.url)
+        current_station.playing = true
       rescue StandardError => e
         message_box(e.message)
-        return false
+        self.station_uuid = nil
       end
-      station.playing = true
     end
 
-    def stop_uuid(station_uuid)
-      return if station_uuid.nil?
+    def stop_station
+      return if current_station.nil?
 
-      station = uuid_to_station(station_uuid)
       @player.stop
-      station.playing = false
+      current_station.playing = false
     end
 
     private
@@ -190,14 +188,14 @@ module Rubio
         next if @station_uuid.nil? || @player.alive?
 
         message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
-        stop_uuid(@station_uuid)
+        stop_station
         self.station_uuid = nil
         true
       end
     end
 
     def uuid_to_station(uuid)
-      return unless uuid
+      return if uuid.nil?
       idx = @table[uuid]
       @stations_all[idx]
     end
