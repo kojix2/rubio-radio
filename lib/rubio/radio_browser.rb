@@ -14,13 +14,11 @@ module Rubio
 
     def topvote(n = 100)
       content = URI.parse(base_url + "stations/topvote/#{n}")
-      table = {} # uuid => index
       result = []
       JSON[content.read].each_with_index do |s, i|
-        table[s['stationuuid']] = i
         result << Station.new(s['stationuuid'], s['name'], s['language'], s['url_resolved'])
       end
-      [result, table]
+      result
     end
   end
 end
