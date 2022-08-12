@@ -25,6 +25,7 @@ opt.on('--[no-]page-count', TrueClass, 'show/hide page count') { |b| options[:sh
 opt.on('-w', '--width INT', Numeric, 'main window width') { |w| options[:initial_width] = w }
 opt.on('-h', '--height INT', Numeric, 'main window height') { |h| options[:initial_height] = h }
 opt.on('--[no-]menu', TrueClass, 'show/hide menu') { |b| options[:show_menu] = b }
+opt.on('--[no-]bookmarks', TrueClass, 'show/hide bookmarks') { |b| options[:show_bookmarks] = b }
 opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
 opt.on('--help', 'show this help message') do
   puts opt

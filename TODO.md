@@ -1,6 +1,5 @@
 # TODO
 
-- Provide option to remove `bookmark` support
 - Fetch radio stations gradually to avoid making user wait for app to start
 
 

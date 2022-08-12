@@ -15,6 +15,7 @@ module Rubio
       option :debug, default: false
       option :show_menu, default: true
       option :show_page_count, default: false
+      option :show_bookmarks, default: true
       option :table_per_page, default: 20
   
       attr_reader :stations, :player
@@ -23,7 +24,7 @@ module Rubio
       before_body do
         @stations = Model::RadioBrowser.topvote(radio_station_count)
         @player = Model::Player.new(backend)
-        @initial_width = (initial_width || 400).to_i
+        @initial_width = (initial_width || (show_bookmarks ? 740 : 620)).to_i
         @initial_height = (initial_height || calculate_initial_height).to_i
         @view = :all
       end
@@ -39,22 +40,7 @@ module Rubio
           vertical_box do
             horizontal_box do
               @station_table = refined_table(
-                table_columns: {
-                  'Play' => { button: {
-                    on_clicked: lambda { |row|
-                      station = @station_table.refined_model_array[row]
-                      select_station(station)
-                    }
-                  } },
-                  'Bookmark' => { button: {
-                    on_clicked: lambda { |row|
-                      station = @station_table.refined_model_array[row]
-                      toggle_bookmarked_station(station)
-                    }
-                  } },
-                  'name' => :text,
-                  'language' => :text
-                },
+                table_columns: station_table_columns,
                 model_array: stations,
                 per_page: table_per_page.to_i,
                 visible_page_count: show_page_count
@@ -169,6 +155,37 @@ module Rubio
             end
           end
         end
+      end
+      
+      def station_table_columns
+        table_columns = {
+          'Play' => {
+            button: {
+              on_clicked: lambda { |row|
+                station = @station_table.refined_model_array[row]
+                select_station(station)
+              }
+            }
+          },
+        }
+        
+        if show_bookmarks
+          table_columns.merge!(
+            'Bookmark' => {
+              button: {
+                on_clicked: lambda { |row|
+                  station = @station_table.refined_model_array[row]
+                  toggle_bookmarked_station(station)
+                }
+              }
+            }
+          )
+        end
+        
+        table_columns.merge!(
+          'name' => :text,
+          'language' => :text,
+        )
       end
   
       def about_message_box
