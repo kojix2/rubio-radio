@@ -51,6 +51,12 @@ The top 10,000 [Radio Browser](https://www.radio-browser.info/) stations are dis
 rubio --count 20000
 ```
 
+The stations are fetched gradually (asynchronously) from the [Radio Browser](https://www.radio-browser.info/) web API to have the app start instantly (avoid having the user wait for the app to start) no matter what the total count of stations is. But, you can avoid gradual prefetching if you prefer.
+
+```
+rubio --no-gradual
+```
+
 Default player is `vlc -I dummy`. But, you can use any command line player that can take URL of radio station as its first argument.
 
 ```
@@ -70,10 +76,12 @@ Usage: rubio [options]
     -b, --backend STR       command to use as backend player ['vlc -I dummy']
     -c, --count INT         number of stations to fetch from radio-browser [10000]
         --per-page INT      number of stations per page [20]
-        --[no-]page-count   show/hide page count
     -w, --width INT         main window width
     -h, --height INT        main window height
-        --[no-]menu         show/hide menu
+        --[no-]page-count   show/hide page count [false]
+        --[no-]menu         show/hide menu [true]
+        --[no-]bookmarks    show/hide bookmarks [true]
+        --[no-]gradual      gradually/non-gradually fetch stations [true]
         --debug             output status of monitored threads
         --help              show this help message
         --version           show the rubio version number
@@ -87,10 +95,10 @@ rubio --mpg123           # `rubio --backend mpg123`
 rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 ```
 
-Small Screen Example:
+Minimalistic Example:
 
 ```
-rubio --per-page 6 --no-menu
+rubio --per-page 6 --no-menu --no-bookmarks
 ```
 
 ![small screen linux screenshot](screenshots/rubio-radio-linux-example-small.png)
@@ -102,6 +110,14 @@ rubio --page-count
 ```
 
 ![page count mac screenshot](screenshots/rubio-radio-mac-example-page-count.png)
+
+### Menus
+
+You can use the top menu bar to stop the currently playing radio station, bookmark, unbookmark, view only bookmarked stations, view only currently playing station, and read the about dialog.
+
+![view book marks mac screenshot](screenshots/rubio-radio-mac-example-view-bookmarks.png)
+
+Bookmarks are stored in `File.join(Dir.home, '.rubio-radio', 'bookmarks.yml')`
 
 ## Links
 
