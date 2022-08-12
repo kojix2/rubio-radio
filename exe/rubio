@@ -44,8 +44,8 @@ rescue OptionParser::InvalidOption, OptionParser::AmbiguousOption => e
 end
 
 begin
-  Rubio::Radio.launch(**options)
+  Rubio::View::Radio.launch(**options)
 rescue StandardError => e
-  Rubio::Radio.launched_application&.player&.stop_all
+  Rubio::View::Radio.launched_application&.player&.stop_all
   raise e
 end
