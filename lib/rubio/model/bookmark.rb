@@ -6,24 +6,28 @@ require 'yaml'
 module Rubio
   module Model
     module Bookmark
-      DIR_RUBIO_RADIO = File.join(Dir.home, '.ruby-radio')
+      DIR_RUBIO_RADIO = File.join(Dir.home, '.rubio-radio')
       FileUtils.mkdir_p(DIR_RUBIO_RADIO)
       FILE_RUBIO_RADIO_BOOKMARKS = File.join(DIR_RUBIO_RADIO, 'bookmarks.yml')
       FileUtils.touch(FILE_RUBIO_RADIO_BOOKMARKS)
       
       class << self
         def add(stationuuid)
-          all << stationuuid
-          save_all
+          unless all.include?(stationuuid)
+            all << stationuuid
+            save_all
+          end
         end
         
         def remove(stationuuid)
-          all.delete(stationuuid)
-          save_all
+          if all.include?(stationuuid)
+            all.delete(stationuuid)
+            save_all
+          end
         end
         
         def all
-          @all ||= load_all
+          @all ||= load_all || []
         end
       
         def save_all

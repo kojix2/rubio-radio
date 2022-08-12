@@ -15,8 +15,8 @@ module Rubio
         'http://all.api.radio-browser.info/json/'
       end
   
-      def topvote(n = 100)
-        content = URI.parse(base_url + "stations/topvote/#{n}")
+      def topvote(n = 100, offset: 0)
+        content = URI.parse(base_url + "stations/topvote/#{n}?offset=#{offset}")
         result = []
         JSON[content.read].each_with_index do |s, i|
           result << Station.new(s['stationuuid'], s['name'], s['language'], s['url_resolved'])

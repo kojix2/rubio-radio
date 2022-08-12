@@ -16,13 +16,16 @@ module Rubio
       option :show_menu, default: true
       option :show_page_count, default: false
       option :show_bookmarks, default: true
+      option :gradually_fetch_stations, default: true
       option :table_per_page, default: 20
   
       attr_reader :stations, :player
       attr_accessor :current_station, :view
   
       before_body do
-        @stations = Model::RadioBrowser.topvote(radio_station_count)
+        @loaded_station_count = [gradually_fetch_stations ? 100 : radio_station_count, radio_station_count].min
+        @loaded_station_offset = 0
+        @stations = Model::RadioBrowser.topvote(@loaded_station_count, offset: @loaded_station_offset)
         @player = Model::Player.new(backend)
         @initial_width = (initial_width || (show_bookmarks ? 740 : 620)).to_i
         @initial_height = (initial_height || calculate_initial_height).to_i
@@ -31,6 +34,7 @@ module Rubio
       
       after_body do
         monitor_thread(debug)
+        async_fetch_stations if gradually_fetch_stations && @stations.count < radio_station_count
       end
   
       body do
@@ -190,7 +194,7 @@ module Rubio
   
       def about_message_box
         license = begin
-          File.read(File.expand_path('../../LICENSE.txt', __dir__))
+          File.read(File.expand_path('../../../LICENSE.txt', __dir__))
         rescue StandardError
           ''
         end
@@ -243,6 +247,17 @@ module Rubio
       def view_playing
         @station_table.model_array = stations.select(&:playing?)
       end
+      
+      def refresh_view
+        case view
+        when :all
+          view_all
+        when :bookmarks
+          view_bookmarks
+        when :playing
+          view_playing
+        end
+      end
   
       private
   
@@ -266,6 +281,20 @@ module Rubio
           message_box("player '#{@player.backend}' stopped!", @player.thr.to_s)
           stop_station
           true
+        end
+      end
+      
+      def async_fetch_stations
+        @loaded_station_offset += @loaded_station_count
+        @loaded_station_count *= 2
+        Thread.new do
+          new_station_count = [@loaded_station_count, radio_station_count - @loaded_station_offset].min
+          @stations += Model::RadioBrowser.topvote(new_station_count, offset: @loaded_station_offset)
+
+          Glimmer::LibUI.queue_main do
+            refresh_view
+            async_fetch_stations if @stations.count < radio_station_count
+          end
         end
       end
     end
