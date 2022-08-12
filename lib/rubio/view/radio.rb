@@ -16,6 +16,7 @@ module Rubio
       option :show_menu, default: true
       option :show_page_count, default: false
       option :show_bookmarks, default: true
+      option :show_margins, default: true
       option :gradually_fetch_stations, default: true
       option :table_per_page, default: 20
 
@@ -41,6 +42,8 @@ module Rubio
         radio_menu_bar
 
         window('Rubio', @initial_width, @initial_height) do
+          margined show_margins
+          
           vertical_box do
             horizontal_box do
               @station_table = refined_table(
@@ -258,13 +261,13 @@ module Rubio
 
       def calculate_initial_height
         if OS.linux?
-          107 + (show_menu ? 26 : 0) + 24 * table_per_page.to_i
+          107 + (show_margins ? 40 : 0) + (show_menu ? 26 : 0) + 24 * table_per_page.to_i
         elsif OS.mac? && OS.host_cpu == 'arm64'
-          90 + 24 * table_per_page.to_i
+          90 + (show_margins ? 40 : 0) + 24 * table_per_page.to_i
         elsif OS.mac?
-          85 + 19 * table_per_page.to_i
+          85 + (show_margins ? 40 : 0) + 19 * table_per_page.to_i
         else # Windows
-          95 + 19 * table_per_page.to_i
+          95 + (show_margins ? 40 : 0) + 19 * table_per_page.to_i
         end
       end
 

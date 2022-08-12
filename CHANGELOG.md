@@ -7,6 +7,7 @@
 - View menu with "All", "Bookmarks", and "Playing" View menu items
 - Command option `--[no-]bookmarks` to show/hide bookmarks in table
 - Command option `--[no-]gradual` to load radio stations gradually (preventing user from waiting for app to start) or avoid loading gradually
+- Command option `--[no-]margins` to show/hide margins around window content
 
 ## 0.0.4
 
