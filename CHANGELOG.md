@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.5
+
+- Add/Remove currently playing radio station to bookmarks (remembered across app restarts by storing station UUID in a YAML file locally)
+
 ## 0.0.4
 
 - Upgrade to glimmer-dsl-libui v0.5.18

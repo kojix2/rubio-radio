@@ -1,6 +1,5 @@
 # TODO
 
-- Add/Remove currently playing radio station to favorites (remembered across app restarts by storing ID+details in a YAML file locally under the user directory)
 - List all favorites through a "Favorites" View menu item + a "All" View menu item to list all
 - Support OR-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 OR WORD2, etc...
 - Support exact FTS (Full-Text-Search) queries using double-quotes (e.g. "WORD1 WORD2")
