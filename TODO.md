@@ -1,6 +1,5 @@
 # TODO
 
-- List all favorites through a "Favorites" View menu item + a "All" View menu item to list all
 - Support OR-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 OR WORD2, etc...
 - Support exact FTS (Full-Text-Search) queries using double-quotes (e.g. "WORD1 WORD2")
 - Support column-based queries by prefixing query term with column name + colon (e.g. "language:english"), which can be combined with FTS queries (e.g. "jazz language:english"). Also, there is no need to enter all of the column letters, yet only the first few letters that distinguish it from other columns (e.g. "jazz l:english")

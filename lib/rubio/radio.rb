@@ -66,6 +66,12 @@ module Rubio
     def radio_menu_bar
       return unless OS.mac? || show_menu
 
+      radio_menu
+      view_menu
+      help_menu
+    end
+    
+    def radio_menu
       menu('Radio') do
         menu_item('Stop') do
           enabled <= [self, 'current_station', on_read: ->(value) {!!value}]
@@ -109,7 +115,29 @@ module Rubio
           end
         end
       end
+    end
 
+    def view_menu
+      menu('View') do
+        radio_menu_item('All') do
+          checked true
+          
+          on_clicked do
+            @station_table.filtered_model_array = stations.dup
+            @station_table.paginate_model_array
+          end
+        end
+        
+        radio_menu_item('Bookmarks') do
+          on_clicked do
+            @station_table.filtered_model_array = stations.dup.select(&:bookmarked)
+            @station_table.paginate_model_array
+          end
+        end
+      end
+    end
+
+    def help_menu
       menu('Help') do
         menu_item('About') do
           on_clicked do
