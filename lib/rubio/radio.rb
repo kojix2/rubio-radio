@@ -37,13 +37,13 @@ module Rubio
               table_columns: {
                 'Play' => { button: {
                   on_clicked: lambda { |row|
-                    station = @station_table.paginated_model_array[row]
+                    station = @station_table.refined_model_array[row]
                     select_station(station)
                   }
                 } },
                 'Bookmark' => { button: {
                   on_clicked: lambda { |row|
-                    station = @station_table.paginated_model_array[row]
+                    station = @station_table.refined_model_array[row]
                     toggle_bookmarked_station(station)
                   }
                 } },
@@ -123,15 +123,13 @@ module Rubio
           checked true
           
           on_clicked do
-            @station_table.filtered_model_array = stations.dup
-            @station_table.paginate_model_array
+            @station_table.model_array = stations
           end
         end
         
         radio_menu_item('Bookmarks') do
           on_clicked do
-            @station_table.filtered_model_array = stations.dup.select(&:bookmarked)
-            @station_table.paginate_model_array
+            @station_table.model_array = stations.select(&:bookmarked)
           end
         end
       end
