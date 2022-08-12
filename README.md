@@ -98,7 +98,7 @@ rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 Minimalistic Example:
 
 ```
-rubio --per-page 6 --no-menu --no-bookmarks
+rubio --per-page 6 --no-margins --no-menu --no-bookmarks
 ```
 
 ![small screen linux screenshot](screenshots/rubio-radio-linux-example-small.png)
