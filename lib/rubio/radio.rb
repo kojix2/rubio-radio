@@ -127,7 +127,7 @@ module Rubio
                       ]
           
           on_clicked do
-            @station_table.model_array = stations
+            view_all
           end
         end
         
@@ -138,7 +138,7 @@ module Rubio
                       ]
                       
           on_clicked do
-            @station_table.model_array = stations.select(&:bookmarked)
+            view_bookmarks
           end
         end
         
@@ -178,8 +178,8 @@ module Rubio
     end
     
     def toggle_bookmarked_station(station)
-      station.bookmarked = !station.bookmarked
-      @station_table.model_array = stations.select(&:bookmarked) if view == :bookmarks
+      station.bookmarked = !station.bookmarked?
+      view_bookmarks if view == :bookmarks && !station.bookmarked
     end
 
     def play_station
@@ -198,6 +198,14 @@ module Rubio
       @player.stop
       current_station.playing = false
       self.current_station = nil
+    end
+    
+    def view_all
+      @station_table.model_array = stations
+    end
+    
+    def view_bookmarks
+      @station_table.model_array = stations.select(&:bookmarked?)
     end
 
     private
