@@ -5,6 +5,8 @@ require_relative 'bookmark'
 module Rubio
   Station = Struct.new(:stationuuid, :name, :language, :url, :play, :bookmark) do
     attr_reader :playing, :bookmarked
+    alias playing? playing
+    alias bookmarked? bookmarked
 
     def initialize(*args, **kwargs)
       super(*args, **kwargs)
