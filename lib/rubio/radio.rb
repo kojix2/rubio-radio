@@ -14,13 +14,14 @@ module Rubio
     option :table_per_page, default: 20
 
     attr_reader :stations, :player
-    attr_accessor :current_station
+    attr_accessor :current_station, :view
 
     before_body do
       @stations = RadioBrowser.topvote(radio_station_count)
       @player = Player.new(backend)
       @initial_width = (initial_width || 400).to_i
       @initial_height = (initial_height || calculate_initial_height).to_i
+      @view = :all
     end
     
     after_body do
@@ -120,7 +121,10 @@ module Rubio
     def view_menu
       menu('View') do
         radio_menu_item('All') do
-          checked true
+          checked <=> [self, :view,
+                        on_read: ->(value) {value == :all},
+                        on_write: ->(value) {value ? :all : :bookmarks},
+                      ]
           
           on_clicked do
             @station_table.model_array = stations
@@ -128,10 +132,17 @@ module Rubio
         end
         
         radio_menu_item('Bookmarks') do
+          checked <=> [self, :view,
+                        on_read: ->(value) {value == :bookmarks},
+                        on_write: ->(value) {value ? :bookmarks : :all},
+                      ]
+                      
           on_clicked do
             @station_table.model_array = stations.select(&:bookmarked)
           end
         end
+        
+        separator_menu_item if OS.mac?
       end
     end
 
@@ -168,6 +179,7 @@ module Rubio
     
     def toggle_bookmarked_station(station)
       station.bookmarked = !station.bookmarked
+      @station_table.model_array = stations.select(&:bookmarked) if view == :bookmarks
     end
 
     def play_station
