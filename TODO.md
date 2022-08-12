@@ -2,7 +2,6 @@
 
 - Provide option to remove `bookmark` support
 - Fetch radio stations gradually to avoid making user wait for app to start
-- View currently playing station (in case it got lost in filtering/pagination)
 
 
 - Support OR-based FTS (Full-Text-Search) queries by treating multiple words as WORD1 OR WORD2, etc...

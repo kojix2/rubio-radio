@@ -127,7 +127,7 @@ module Rubio
           radio_menu_item('All') do
             checked <=> [self, :view,
                           on_read: ->(value) {value == :all},
-                          on_write: ->(value) {value ? :all : :bookmarks},
+                          on_write: ->(value) {:all},
                         ]
             
             on_clicked do
@@ -138,11 +138,22 @@ module Rubio
           radio_menu_item('Bookmarks') do
             checked <=> [self, :view,
                           on_read: ->(value) {value == :bookmarks},
-                          on_write: ->(value) {value ? :bookmarks : :all},
+                          on_write: ->(value) {:bookmarks},
                         ]
                         
             on_clicked do
               view_bookmarks
+            end
+          end
+          
+          radio_menu_item('Playing') do
+            checked <=> [self, :view,
+                          on_read: ->(value) {value == :playing},
+                          on_write: ->(value) {:playing},
+                        ]
+                        
+            on_clicked do
+              view_playing
             end
           end
           
@@ -210,6 +221,10 @@ module Rubio
       
       def view_bookmarks
         @station_table.model_array = stations.select(&:bookmarked?)
+      end
+      
+      def view_playing
+        @station_table.model_array = stations.select(&:playing?)
       end
   
       private
