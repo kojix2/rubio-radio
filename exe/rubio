@@ -49,6 +49,6 @@ end
 begin
   Rubio::View::Radio.launch(**options)
 rescue StandardError => e
-  Rubio::View::Radio.launched_application&.player&.stop_all
+  Rubio::View::Radio.launched_application&.presenter&.player&.stop_all
   raise e
 end

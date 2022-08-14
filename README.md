@@ -128,7 +128,13 @@ Also, the filter field supports exact term filtering if you enter multiple words
 Last but not least, the filter field supports column-specific queries by including a full column name or the first few letters, followed by colon (:), followed by a single word or double-quoted multiple words for exact term matching against the column:
 
 ```
-talk lang:eng
+name:talk language:eng
+```
+
+or just:
+
+```
+n:talk l:eng
 ```
 
 ![advanced filtering mac screenshot](screenshots/rubio-radio-mac-example-advanced-filtering.png)
@@ -139,13 +145,19 @@ This advanced example matches the word `FM` against the name column, and languag
 n:FM l:"bahasa indonesia"
 ```
 
+Finally, you can mix different types of filters:
+
+```
+brasil "bossa jazz" l:brazilian l:portuguese
+```
+
 ### Menus
 
 You can use the top menu bar to stop the currently playing radio station, bookmark, unbookmark, view only bookmarked stations, view only currently playing station, and read the about dialog.
 
 ![view book marks mac screenshot](screenshots/rubio-radio-mac-example-view-bookmarks.png)
 
-Bookmarks are stored in `File.join(Dir.home, '.rubio-radio', 'bookmarks.yml')`
+Bookmarks are stored in `~/.rubio-radio/bookmarks.yml`
 
 ## Links
 
