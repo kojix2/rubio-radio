@@ -8,6 +8,9 @@
 - Command option `--[no-]bookmarks` to show/hide bookmarks in table
 - Command option `--[no-]gradual` to load radio stations gradually (preventing user from waiting for app to start) or avoid loading gradually
 - Command option `--[no-]margins` to show/hide margins around window content
+- Support AND-based filtering with multiple words separated by space treated as WORD1 AND WORD2, ...
+- Support exact term filtering with double-quoted filter term (e.g. "WORD1 WORD2")
+- Support column-based filtering by prefixing a query term with column name + colon (e.g. "language:english"), which can be combined with other words (e.g. "jazz language:english"). Also, there is no need to enter all of the column letters, yet only the first few letters that distinguish it from other columns (e.g. "jazz l:english")
 
 ## 0.0.4
 
