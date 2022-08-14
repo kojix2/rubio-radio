@@ -111,6 +111,34 @@ rubio --page-count
 
 ![page count mac screenshot](screenshots/rubio-radio-mac-example-page-count.png)
 
+### Filtering
+
+The filter field does AND-based filtering when you enter multiple words separated by spaces:
+
+```
+jazz smooth
+```
+
+Also, the filter field supports exact term filtering if you enter multiple words surrounded by double-quotes.
+
+```
+"bossa nova"
+```
+
+Last but not least, the filter field supports column-specific queries by including a full column name or the first few letters, followed by colon (:), followed by a single word or double-quoted multiple words for exact term matching against the column:
+
+```
+talk lang:eng
+```
+
+![advanced filtering mac screenshot](screenshots/rubio-radio-mac-example-advanced-filtering.png)
+
+This advanced example matches the word `FM` against the name column, and language `bahasa indonesia` against the language column.
+
+```
+n:FM l:"bahasa indonesia"
+```
+
 ### Menus
 
 You can use the top menu bar to stop the currently playing radio station, bookmark, unbookmark, view only bookmarked stations, view only currently playing station, and read the about dialog.
