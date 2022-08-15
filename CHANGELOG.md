@@ -2,7 +2,7 @@
 
 ## 0.0.5
 
-- Upgrade to glimmer-dsl-libui v0.5.20
+- Upgrade to glimmer-dsl-libui v0.5.22
 - Add/Remove currently playing radio station to bookmarks (remembered across app restarts by storing station UUID in a YAML file locally)
 - View menu with "All", "Bookmarks", and "Playing" View menu items
 - Command option `--[no-]bookmarks` to show/hide bookmarks in table
