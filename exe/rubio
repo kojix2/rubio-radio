@@ -26,7 +26,9 @@ opt.on('-h', '--height INT', Numeric, 'main window height') { |h| options[:initi
 opt.on('--[no-]page-count', TrueClass, 'show/hide page count [false]') { |b| options[:show_page_count] = b }
 opt.on('--[no-]menu', TrueClass, 'show/hide menu [true]') { |b| options[:show_menu] = b }
 opt.on('--[no-]bookmarks', TrueClass, 'show/hide bookmarks [true]') { |b| options[:show_bookmarks] = b }
-opt.on('--[no-]gradual', TrueClass, 'gradually/non-gradually fetch stations [true]') { |g| options[:gradually_fetch_stations] = g }
+opt.on('--[no-]gradual', TrueClass, 'gradually/non-gradually fetch stations [true]') do |g|
+  options[:gradually_fetch_stations] = g
+end
 opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
 opt.on('--help', 'show this help message') do
   puts opt
