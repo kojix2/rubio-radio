@@ -33,19 +33,34 @@ module Rubio
 
       body do
         radio_menu_bar
-  
+        
         window('Rubio', @presenter.initial_width, @presenter.initial_height) do
           margined show_margins
           
           vertical_box do
-            horizontal_box do
-              @station_table = refined_table(
-                table_columns: station_table_columns,
-                model_array: @presenter.stations,
-                per_page: table_per_page.to_i,
-                visible_page_count: show_page_count
-              )
+            # TODO refactor to its own method (currently_playing_label)
+            if backend == 'vlc -I rc'
+              horizontal_box do
+                stretchy false
+                
+                # TODO merge both labels into one
+                
+                label('Playing:') do
+                  stretchy false
+                end
+                
+                label do
+                  text <= [@presenter.player, :currently_playing]
+                end
+              end
             end
+            
+            @station_table = refined_table(
+              table_columns: station_table_columns,
+              model_array: @presenter.stations,
+              per_page: table_per_page.to_i,
+              visible_page_count: show_page_count
+            )
           end
 
           on_closing do

@@ -21,7 +21,7 @@ Windows
 
 **[VLC](https://github.com/videolan/vlc)**
 
-`rubio` uses the `vlc -I dummy` as the audio playback backend.
+`rubio` uses the `vlc -I rc` as the audio playback backend.
 
 On Mac, it is recommended that you install VLC via [Homebrew](https://brew.sh/) to ensure the `vlc` command is added to the PATH environment variable automatically:
 
@@ -57,7 +57,7 @@ The stations are fetched gradually (asynchronously) from the [Radio Browser](htt
 rubio --no-gradual
 ```
 
-Default player is `vlc -I dummy`. But, you can use any command line player that can take URL of radio station as its first argument.
+Default player is `vlc -I rc`. But, you can use any command line player that can take URL of radio station as its first argument.
 
 ```
 rubio --backend mpg123
@@ -73,7 +73,7 @@ rubio --help
 Usage: rubio [options]
         --vlc [STR]         use VLC interface STR on the backend [dummy]
         --mpg123            use mpg123 on the backend
-    -b, --backend STR       command to use as backend player ['vlc -I dummy']
+    -b, --backend STR       command to use as backend player ['vlc -I rc']
     -c, --count INT         number of stations to fetch from radio-browser or -1 to fetch them all [-1]
         --per-page INT      number of stations per page [20]
     -w, --width INT         main window width

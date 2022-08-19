@@ -44,7 +44,7 @@ module Rubio
   
       def play_station
         begin
-          @player.play(current_station.url)
+          @player.play(current_station.url, name: current_station.name)
           current_station.playing = true
         rescue StandardError => e
           self.current_station = nil
