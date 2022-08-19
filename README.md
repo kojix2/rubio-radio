@@ -45,7 +45,7 @@ Run with this command:
 rubio
 ```
 
-The top 10,000 [Radio Browser](https://www.radio-browser.info/) stations are displayed by default. But, you can customize the count (note that currently, there are only about 32,000 [Radio Browser](https://www.radio-browser.info/) stations total).
+All [Radio Browser](https://www.radio-browser.info/) stations are displayed by default. But, you can customize the count with `--count COUNT` (note that currently, there are only about 33,000 [Radio Browser](https://www.radio-browser.info/) stations total). Setting the count to `-1` will fetch all stations.
 
 ```
 rubio --count 20000
@@ -74,7 +74,7 @@ Usage: rubio [options]
         --vlc [STR]         use VLC interface STR on the backend [dummy]
         --mpg123            use mpg123 on the backend
     -b, --backend STR       command to use as backend player ['vlc -I dummy']
-    -c, --count INT         number of stations to fetch from radio-browser [10000]
+    -c, --count INT         number of stations to fetch from radio-browser or -1 to fetch them all [-1]
         --per-page INT      number of stations per page [20]
     -w, --width INT         main window width
     -h, --height INT        main window height
@@ -82,10 +82,10 @@ Usage: rubio [options]
         --[no-]menu         show/hide menu [true]
         --[no-]bookmarks    show/hide bookmarks [true]
         --[no-]gradual      gradually/non-gradually fetch stations [true]
+        --[no-]margins      show/hide margins [true]
         --debug             output status of monitored threads
         --help              show this help message
-        --version           show the rubio version number
-```
+        --version           show the rubio version number```
 
 Examples:
 

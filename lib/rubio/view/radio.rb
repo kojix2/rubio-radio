@@ -10,7 +10,7 @@ module Rubio
       include Glimmer::LibUI::Application
 
       options :backend, :initial_width, :initial_height
-      option :radio_station_count, default: 10_000
+      option :radio_station_count, default: -1
       option :debug, default: false
       option :show_menu, default: true
       option :show_page_count, default: false
