@@ -85,13 +85,14 @@ Usage: rubio [options]
         --[no-]margins      show/hide margins [true]
         --debug             output status of monitored threads
         --help              show this help message
-        --version           show the rubio version number```
+        --version           show the rubio version number
+```
 
 Examples:
 
 ```
-rubio --vlc              # `vlc -I rc` (interactive command line interface)
-rubio --mpg123           # `rubio --backend mpg123`
+rubio --vlc              # vlc -I rc (interactive command line interface)
+rubio --mpg123           # rubio --backend mpg123
 rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 ```
 
