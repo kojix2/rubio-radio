@@ -75,7 +75,7 @@ module Rubio
           separator_menu_item
 
           menu_item('Bookmark') do
-            enabled <= [@presenter, 'current_station.bookmarked', on_read: :!]
+            enabled <= [@presenter, 'current_station.bookmarked', on_read: ->(value) { value == false }]
             
             on_clicked do
               toggle_bookmarked_station
@@ -83,7 +83,7 @@ module Rubio
           end
 
           menu_item('Unbookmark') do
-            enabled <= [@presenter, 'current_station.bookmarked']
+            enabled <= [@presenter, 'current_station.bookmarked', on_read: ->(value) { value == true }]
             
             on_clicked do
               toggle_bookmarked_station

@@ -5,6 +5,7 @@
 - Command option `--[no-]margins` to show/hide margins around window content
 - Update command option `--count` to accept `-1` as a valid value for fetching all radio stations
 - Make app fetch all radio stations by default (`--count -1`)
+- Fix issue with bookmark/unbookmark menu items remaining enabled after stopping song
 
 ## 0.0.5
 

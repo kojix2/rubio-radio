@@ -19,7 +19,6 @@ module Rubio
         @options[:radio_station_count] = 1_000_000 if options[:radio_station_count] == -1
         @loaded_station_count = [options[:gradually_fetch_stations] ? 100 : options[:radio_station_count], options[:radio_station_count]].min
         @loaded_station_offset = 0
-        pd @loaded_station_count
         @stations = Model::RadioBrowser.topvote(@loaded_station_count, offset: @loaded_station_offset)
         @player = Model::Player.new(options[:backend])
         @initial_width = (options[:initial_width] || (options[:show_bookmarks] ? 740 : 620)).to_i
