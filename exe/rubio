@@ -5,16 +5,16 @@ require 'puts_debuggerer' if ENV['PD'].to_s.downcase == 'true'
 require 'rubio'
 require 'optparse'
 
-options = { backend: 'vlc -I dummy' }
+options = { backend: 'vlc -I rc' }
 
 opt = OptionParser.new
 opt.summary_width = 23
-opt.on('--vlc [STR]', 'use VLC interface STR on the backend [dummy]') do |i|
-  i ||= 'dummy'
+opt.on('--vlc [STR]', 'use VLC interface STR on the backend [rc]') do |i|
+  i ||= 'rc'
   options[:backend] = "vlc -I #{i}"
 end
 opt.on('--mpg123', 'use mpg123 on the backend') { options[:backend] = 'mpg123' }
-opt.on('-b', '--backend STR', String, 'command to use as backend player [\'vlc -I dummy\']') do |b|
+opt.on('-b', '--backend STR', String, 'command to use as backend player [\'vlc -I rc\']') do |b|
   options[:backend] = b
 end
 opt.on('-c', '--count INT', Numeric, 'number of stations to fetch from radio-browser or -1 to fetch them all [-1]') do |c|

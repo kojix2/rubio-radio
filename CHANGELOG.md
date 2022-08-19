@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.7
+
+- Change the default backend to `vlc -I rc`
+- Show currently playing song if backend is `vlc -I rc`
+
 ## 0.0.6
 
 - Command option `--[no-]margins` to show/hide margins around window content

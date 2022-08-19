@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rubio-radio (0.0.6)
+    rubio-radio (0.0.7)
       glimmer-dsl-libui (= 0.5.22)
 
 GEM
