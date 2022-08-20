@@ -4,6 +4,7 @@
 
 - Change the default backend to `vlc -I rc`
 - Show currently playing song if backend is `vlc -I rc`
+- Command option `--[no-]info` to show/hide currently playing (song) info when using `vlc -I rc` backend only [true]
 
 ## 0.0.6
 

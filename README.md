@@ -91,7 +91,7 @@ Usage: rubio [options]
 Examples:
 
 ```
-rubio --vlc              # vlc -I rc (interactive command line interface)
+rubio --vlc dummy        # vlc -I dummy (interactive command line interface)
 rubio --mpg123           # rubio --backend mpg123
 rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 ```
@@ -99,7 +99,7 @@ rubio --count 1000       # Displays the top 1,000 Radio Browser stations
 Minimalistic Example:
 
 ```
-rubio --per-page 6 --no-margins --no-menu --no-bookmarks
+rubio --per-page 6 --no-margins --no-info --no-menu --no-bookmarks
 ```
 
 ![small screen linux screenshot](screenshots/rubio-radio-linux-example-small.png)
