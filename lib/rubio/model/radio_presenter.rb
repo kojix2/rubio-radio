@@ -7,8 +7,10 @@ module Rubio
   module Model
     # This is a presenter for the Radio view, which is an advanced controller
     class RadioPresenter
+      include Glimmer
+      
       attr_reader :player, :initial_width, :initial_height, :options
-      attr_accessor :stations, :current_station, :view
+      attr_accessor :stations, :current_station, :view, :window_height
     
       # Initializes with view options below:
       # :backend, :initial_width, :initial_height, :radio_station_count, :debug,
@@ -23,7 +25,11 @@ module Rubio
         @player = Model::Player.new(options[:backend], show_currently_playing: options[:show_currently_playing])
         @initial_width = (options[:initial_width] || (options[:show_bookmarks] ? 740 : 620)).to_i
         @initial_height = (options[:initial_height] || calculate_initial_height).to_i
+        @window_height = @initial_height
         @view = :all
+        observe(@player, :currently_playing) do |new_currently_playing|
+          self.window_height = calculate_initial_height
+        end
       end
       
       def select_station(station)
@@ -77,14 +83,17 @@ module Rubio
       private
       
       def calculate_initial_height
+        window_margin = options[:show_margins] ? 40 : 0
+        currently_playing_height = options[:show_currently_playing] ? ((@player.currently_playing ? @player.currently_playing.lines.size : 1)*16 + 8) : 0
+        table_per_page = options[:table_per_page].to_i
         if OS.linux?
-          107 + (options[:show_margins] ? 40 : 0) + (options[:show_menu] ? 26 : 0) + 24 * options[:table_per_page].to_i
+          107 + window_margin + currently_playing_height + (options[:show_menu] ? 26 : 0) + 24 * table_per_page
         elsif OS.mac? && OS.host_cpu == 'arm64'
-          90 + (options[:show_margins] ? 40 : 0) + 24 * options[:table_per_page].to_i
+          90 + window_margin + currently_playing_height + 24 * table_per_page
         elsif OS.mac?
-          85 + (options[:show_margins] ? 40 : 0) + 19 * options[:table_per_page].to_i
+          85 + window_margin + currently_playing_height + 19 * table_per_page
         else # Windows
-          95 + (options[:show_margins] ? 40 : 0) + 19 * options[:table_per_page].to_i
+          95 + window_margin + currently_playing_height + 19 * table_per_page
         end
       end
     end
