@@ -18,7 +18,7 @@ module Rubio
         @show_currently_playing = show_currently_playing
         @pid = nil
         @thr = nil
-        @status = []
+        @status = {}
         @history = []
         self.currently_playing = CURRENTLY_PLAYING_NONE
       end
@@ -30,9 +30,7 @@ module Rubio
       end
 
       def alive?
-        return false if @thr.nil?
-
-        @thr.alive?
+        @thr&.alive? || (@io && !@io.closed?)
       end
 
       def stop?
@@ -47,30 +45,43 @@ module Rubio
         # if no space :
         #   * cmmand url        # will be killed by @pid
         raise if url.match(/\s/)
+        @playing_station_name = station_name
 
         if show_currently_playing? && backend == 'vlc -I rc'
           @io = IO.popen("#{backend} \"#{url}\"", 'r+')
-          @thr = Thread.new do
-            loop do
-              Glimmer::LibUI.queue_main { self.currently_playing = currently_playing_text(station_name) }
-              sleep(1)
-            end
-          end
+          update_currently_playing
+          continuously_fetch_currently_playing
         else
           @pid = spawn(*backend.split(' '), url)
           @thr = Process.detach(@pid)
         end
         
-        @status = [@pid, @io, @thr]
+        @status = {thr: @thr, pid: @pid, io: @io}
         @history << @status
       end
       
-      def currently_playing_text(station_name)
+      def continuously_fetch_currently_playing
+        return if @continuously_fetching_currently_playing
+        @continuously_fetching_currently_playing = true
+      
+        Glimmer::LibUI.timer(1) do
+          update_currently_playing
+          @continuously_fetching_currently_playing
+        end
+      end
+      
+      def update_currently_playing
+        Glimmer::LibUI.queue_main do
+          self.currently_playing = currently_playing_text if alive?
+        end
+      end
+      
+      def currently_playing_text
         currently_playing_info = info
         if currently_playing_info && !currently_playing_info.strip.empty?
-          [station_name, currently_playing_info].join(' - ')
+          [@playing_station_name, currently_playing_info].join(' - ')
         else
-          station_name
+          @playing_station_name
         end
       end
       
@@ -84,30 +95,26 @@ module Rubio
         nil
       end
 
-      def stop
-        return unless alive?
-
-        if @thr.class == Thread
-          @io.close
-          @thr.kill
-          self.currently_playing = CURRENTLY_PLAYING_NONE
-        else
+      def stop(thr: nil, pid: nil, io: nil)
+        thr ||= @thr
+        pid ||= @pid
+        io  ||= @io
+        if thr&.alive?
           r = Process.kill(OS.windows? ? :KILL : :TERM, pid)
+        elsif io && !io.closed?
+          io.close
+          r = io.closed?
+          self.currently_playing = CURRENTLY_PLAYING_NONE
         end
-        @thr = nil
-        @pid = nil
+        thr = nil
+        pid = nil
+        io = nil
         r
       end
 
       def stop_all
-        @history.each do |pid, io, thr|
-          if thr.class == Thread
-            io.close
-            thr.kill
-          else
-            Process.kill(OS.windows? ? :KILL : :TERM, pid) if thr.alive?
-          end
-        end
+        @continuously_fetching_currently_playing = false
+        @history.each { |history| stop(**history) }
       end
       
       private
