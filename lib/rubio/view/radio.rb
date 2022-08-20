@@ -38,22 +38,7 @@ module Rubio
           margined show_margins
           
           vertical_box do
-            # TODO refactor to its own method (currently_playing_label)
-            if backend == 'vlc -I rc'
-              horizontal_box do
-                stretchy false
-                
-                # TODO merge both labels into one
-                
-                label('Playing:') do
-                  stretchy false
-                end
-                
-                label do
-                  text <= [@presenter.player, :currently_playing]
-                end
-              end
-            end
+            currently_playing_label
             
             @station_table = refined_table(
               table_columns: station_table_columns,
@@ -169,6 +154,15 @@ module Rubio
               about_message_box
             end
           end
+        end
+      end
+      
+      def currently_playing_label
+        return unless backend == 'vlc -I rc'
+        
+        label do
+          stretchy false
+          text <= [@presenter.player, :currently_playing]
         end
       end
 
