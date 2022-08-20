@@ -28,6 +28,9 @@ module Rubio
       end
 
       after_body do
+        observe(@presenter, :window_height) do |new_window_height|
+          body_root.content_size = [ body_root.content_size.first, new_window_height ]
+        end
         monitor_thread(debug)
         async_fetch_stations if gradually_fetch_stations && @presenter.stations_incomplete?
       end
