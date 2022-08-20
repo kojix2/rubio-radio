@@ -28,9 +28,6 @@ module Rubio
       end
 
       after_body do
-        observe(@presenter, :window_height) do |new_window_height|
-          body_root.content_size = [ body_root.content_size.first, new_window_height ]
-        end
         monitor_thread(debug)
         async_fetch_stations if gradually_fetch_stations && @presenter.stations_incomplete?
       end
@@ -40,6 +37,7 @@ module Rubio
         
         window('Rubio', @presenter.initial_width, @presenter.initial_height) do
           margined show_margins
+          height <= [@presenter, :window_height]
           
           vertical_box do
             currently_playing_label
