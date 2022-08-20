@@ -3,7 +3,10 @@
 module Rubio
   module Model
     class Player
-      attr_accessor :backend, :pid, :thr, :status, :history, :currently_playing
+      CURRENTLY_PLAYING_NONE = 'None'
+    
+      attr_accessor :backend, :pid, :thr, :status, :history
+      attr_reader :currently_playing
 
       def initialize(backend = OS.linux? ? 'cvlc' : 'vlc -I rc')
         raise unless backend.is_a?(String)
@@ -13,7 +16,12 @@ module Rubio
         @thr = nil
         @status = []
         @history = []
-        @currently_playing = 'None'
+        self.currently_playing = CURRENTLY_PLAYING_NONE
+      end
+      
+      def currently_playing=(value)
+         # TODO break by lines of 70 characters max
+        @currently_playing = "Playing: #{value}"
       end
 
       def alive?
@@ -26,7 +34,7 @@ module Rubio
         @thr.nil? || @thr.stop?
       end
 
-      def play(url, name: 'N/A')
+      def play(url, station_name: 'N/A')
         # Do not include spaces in the command line
         # if a space exist :
         #   * sh -c command url # this process with @pid will be killed
@@ -39,10 +47,7 @@ module Rubio
           @io = IO.popen("#{backend} \"#{url}\"", 'r+')
           @thr = Thread.new do
             loop do
-              Glimmer::LibUI.queue_main do
-                currently_playing_info = info
-                self.currently_playing = currently_playing_info && !currently_playing_info.strip.empty? ? [name, currently_playing_info].join(' - ') : name
-              end
+              Glimmer::LibUI.queue_main { self.currently_playing = currently_playing_text(station_name) }
               sleep(1)
             end
           end
@@ -53,6 +58,15 @@ module Rubio
         
         @status = [@pid, @io, @thr]
         @history << @status
+      end
+      
+      def currently_playing_text(station_name)
+        currently_playing_info = info
+        if currently_playing_info && !currently_playing_info.strip.empty?
+          [station_name, currently_playing_info].join(' - ')
+        else
+          station_name
+        end
       end
       
       def info
@@ -71,7 +85,7 @@ module Rubio
         if @thr.class == Thread
           @io.close
           @thr.kill
-          self.currently_playing = 'None'
+          self.currently_playing = CURRENTLY_PLAYING_NONE
         else
           r = Process.kill(OS.windows? ? :KILL : :TERM, pid)
         end
