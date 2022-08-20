@@ -7,8 +7,6 @@ module Rubio
   module Model
     # This is a presenter for the Radio view, which is an advanced controller
     class RadioPresenter
-      include Glimmer # using Glimmer only for Observers feature
-      
       attr_reader :player, :initial_width, :initial_height, :options
       attr_accessor :stations, :current_station, :view, :window_height
     
@@ -27,9 +25,10 @@ module Rubio
         @initial_height = (options[:initial_height] || calculate_initial_height).to_i
         @window_height = @initial_height
         @view = :all
-        observe(@player, :currently_playing) do |new_currently_playing|
+        
+        Glimmer::DataBinding::Observer::Proc.new do
           self.window_height = calculate_initial_height
-        end
+        end.observe(@player, :currently_playing)
       end
       
       def select_station(station)
