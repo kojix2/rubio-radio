@@ -4,6 +4,7 @@ module Rubio
   module Model
     class Player
       CURRENTLY_PLAYING_NONE = 'None'
+      CURRENTLY_PLAYING_LENGTH_PER_LINE = 90
     
       attr_accessor :backend, :pid, :thr, :status, :history
       attr_reader :currently_playing
@@ -21,7 +22,9 @@ module Rubio
       
       def currently_playing=(value)
          # TODO break by lines of 70 characters max
-        @currently_playing = "Playing: #{value}"
+        value = "Playing: #{value}"
+        
+        @currently_playing = break_by_lines(value)
       end
 
       def alive?
@@ -106,6 +109,20 @@ module Rubio
       end
       
       private
+      
+      def break_by_lines(text, length_per_line: CURRENTLY_PLAYING_LENGTH_PER_LINE)
+        new_text_lines = ['']
+        text.chars.each_with_index do |char, i|
+          if (char != ' ' && new_text_lines[-1].length < length_per_line - 1) ||
+             (char == ' ' && new_text_lines[-1].length < length_per_line)
+            new_text_lines[-1] = new_text_lines[-1] + char
+          else
+            new_text_lines[-1] = new_text_lines[-1] + '-' if new_text_lines[-1][-1] != ' '
+            new_text_lines << char
+          end
+        end
+        new_text_lines.join("\n")
+      end
       
       def io_command(command)
         @io.puts(command)
