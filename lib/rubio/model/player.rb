@@ -11,7 +11,7 @@ module Rubio
       attr_reader :currently_playing
       alias_method :show_currently_playing?, :show_currently_playing
 
-      def initialize(backend = OS.linux? ? 'cvlc' : 'vlc -I rc', show_currently_playing: true)
+      def initialize(backend = 'vlc -I rc', show_currently_playing: true)
         raise unless backend.is_a?(String)
 
         @backend = backend
