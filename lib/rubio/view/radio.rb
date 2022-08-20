@@ -16,6 +16,7 @@ module Rubio
       option :show_page_count, default: false
       option :show_bookmarks, default: true
       option :show_margins, default: true
+      option :show_currently_playing, default: true
       option :gradually_fetch_stations, default: true
       option :table_per_page, default: 20
   
@@ -158,7 +159,7 @@ module Rubio
       end
       
       def currently_playing_label
-        return unless backend == 'vlc -I rc'
+        return unless show_currently_playing && backend == 'vlc -I rc'
         
         label do
           stretchy false

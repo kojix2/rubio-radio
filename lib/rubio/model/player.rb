@@ -7,12 +7,15 @@ module Rubio
       CURRENTLY_PLAYING_LENGTH_PER_LINE = 90
     
       attr_accessor :backend, :pid, :thr, :status, :history
+      attr_reader :show_currently_playing
       attr_reader :currently_playing
+      alias_method :show_currently_playing?, :show_currently_playing
 
-      def initialize(backend = OS.linux? ? 'cvlc' : 'vlc -I rc')
+      def initialize(backend = OS.linux? ? 'cvlc' : 'vlc -I rc', show_currently_playing: true)
         raise unless backend.is_a?(String)
 
         @backend = backend
+        @show_currently_playing = show_currently_playing
         @pid = nil
         @thr = nil
         @status = []
@@ -46,7 +49,7 @@ module Rubio
         #   * cmmand url        # will be killed by @pid
         raise if url.match(/\s/)
 
-        if backend == 'vlc -I rc'
+        if show_currently_playing? && backend == 'vlc -I rc'
           @io = IO.popen("#{backend} \"#{url}\"", 'r+')
           @thr = Thread.new do
             loop do
