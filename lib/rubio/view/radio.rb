@@ -35,9 +35,13 @@ module Rubio
       body do
         radio_menu_bar
         
-        window('Rubio', @presenter.initial_width, @presenter.initial_height) do
+        window('Rubio', @presenter.initial_width, @presenter.initial_height) do |w|
           margined show_margins
-          height <= [@presenter, :window_height]
+          height <= [@presenter, :window_height,
+                      on_read: ->(value) {
+                        value > w.height ? value : w.height # grow only, never shrink
+                      }
+                    ]
           
           vertical_box do
             currently_playing_label
