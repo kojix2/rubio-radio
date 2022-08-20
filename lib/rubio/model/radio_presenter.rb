@@ -7,7 +7,7 @@ module Rubio
   module Model
     # This is a presenter for the Radio view, which is an advanced controller
     class RadioPresenter
-      include Glimmer
+      include Glimmer # using Glimmer only for Observers feature
       
       attr_reader :player, :initial_width, :initial_height, :options
       attr_accessor :stations, :current_station, :view, :window_height

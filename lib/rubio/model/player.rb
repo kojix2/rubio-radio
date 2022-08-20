@@ -24,7 +24,6 @@ module Rubio
       end
       
       def currently_playing=(value)
-         # TODO break by lines of 70 characters max
         value = "Playing: #{value}"
         
         @currently_playing = break_by_lines(value)
