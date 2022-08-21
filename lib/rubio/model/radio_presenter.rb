@@ -82,11 +82,11 @@ module Rubio
       private
       
       def calculate_initial_height
-        window_margin = options[:show_margins] ? 40 : 0
+        window_margin = options[:show_margins] ? (OS.linux? ? 22 : 40) : 0
         currently_playing_height = options[:show_currently_playing] ? ((@player.currently_playing ? @player.currently_playing.lines.size : 1)*16 + 8) : 0
         table_per_page = options[:table_per_page].to_i
         if OS.linux?
-          107 + window_margin + currently_playing_height + (options[:show_menu] ? 26 : 0) + 24 * table_per_page
+          108 + window_margin + currently_playing_height + (options[:show_menu] ? 26 : 0) + 24 * table_per_page
         elsif OS.mac? && OS.host_cpu == 'arm64'
           90 + window_margin + currently_playing_height + 24 * table_per_page
         elsif OS.mac?
