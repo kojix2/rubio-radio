@@ -35,11 +35,19 @@ module Rubio
       body do
         radio_menu_bar
         
-        window('Rubio', @presenter.initial_width, @presenter.initial_height) do |w|
+        window('Rubio', @presenter.initial_width, @presenter.initial_height / (OS.linux? ? 2.0 : 1)) do
           margined show_margins
           height <= [@presenter, :window_height,
                       on_read: ->(value) {
-                        value > w.height ? value : w.height # grow only, never shrink
+                        w = body_root
+                        if w.nil? # window not built yet
+			  # Linux libui is weird. The first time height is set, it must be halved
+                          value / (OS.linux? ? 2.0 : 1)
+                        else
+                          value -= 50 if OS.linux? # more Linux weirdness
+                          value = value > w.height ? value : w.height # grow only, never shrink
+                          value
+                        end
                       }
                     ]
           
