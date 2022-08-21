@@ -28,7 +28,7 @@ opt.on('--[no-]menu', TrueClass, 'show/hide menu [true]') { |b| options[:show_me
 opt.on('--[no-]bookmarks', TrueClass, 'show/hide bookmarks [true]') { |b| options[:show_bookmarks] = b }
 opt.on('--[no-]gradual', TrueClass, 'gradually/non-gradually fetch stations [true]') { |g| options[:gradually_fetch_stations] = g }
 opt.on('--[no-]margins', TrueClass, 'show/hide margins [true]') { |m| options[:show_margins] = m }
-opt.on('--[no-]info', TrueClass, 'show/hide currently playing (song) info when using `vlc -I rc` backend only [true]') { |i| options[:show_currently_playing] = i }
+opt.on('--[no-]info', TrueClass, 'show/hide currently playing (song) info when using \'vlc -I rc\' backend only [true]') { |i| options[:show_currently_playing] = i }
 opt.on('--debug', 'output status of monitored threads') { options[:debug] = true }
 opt.on('--help', 'show this help message') do
   puts opt

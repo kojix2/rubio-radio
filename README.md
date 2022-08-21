@@ -57,7 +57,7 @@ The stations are fetched gradually (asynchronously) from the [Radio Browser](htt
 rubio --no-gradual
 ```
 
-Default player is `vlc -I rc`. But, you can use any command line player that can take URL of radio station as its first argument.
+Default player is `vlc -I rc`, which enables showing currently playing song info (except on Windows). But, you can use any command line player that can take URL of radio station as its first argument.
 
 ```
 rubio --backend mpg123
@@ -71,7 +71,7 @@ rubio --help
 
 ```
 Usage: rubio [options]
-        --vlc [STR]         use VLC interface STR on the backend [dummy]
+        --vlc [STR]         use VLC interface STR on the backend [rc]
         --mpg123            use mpg123 on the backend
     -b, --backend STR       command to use as backend player ['vlc -I rc']
     -c, --count INT         number of stations to fetch from radio-browser or -1 to fetch them all [-1]
@@ -83,6 +83,7 @@ Usage: rubio [options]
         --[no-]bookmarks    show/hide bookmarks [true]
         --[no-]gradual      gradually/non-gradually fetch stations [true]
         --[no-]margins      show/hide margins [true]
+        --[no-]info         show/hide currently playing (song) info when using 'vlc -I rc' backend only [true]
         --debug             output status of monitored threads
         --help              show this help message
         --version           show the rubio version number

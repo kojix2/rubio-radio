@@ -41,7 +41,7 @@ module Rubio
                       on_read: ->(value) {
                         w = body_root
                         if w.nil? # window not built yet
-			  # Linux libui is weird. The first time height is set, it must be halved
+                          # Linux libui is weird. The first time height is set, it must be halved
                           value / (OS.linux? ? 2.0 : 1)
                         else
                           value -= 50 if OS.linux? # more Linux weirdness
@@ -189,6 +189,7 @@ module Rubio
                 begin
                   @presenter.select_station(station)
                 rescue StandardError => e
+                  puts e.full_message if debug
                   message_box(e.message)
                 end
               }
@@ -218,7 +219,8 @@ module Rubio
       def about_message_box
         license = begin
           File.read(File.expand_path('../../../LICENSE.txt', __dir__))
-        rescue StandardError
+        rescue StandardError => e
+          puts e.full_message if debug
           ''
         end
         product = "rubio-radio #{Rubio::VERSION}"

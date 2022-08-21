@@ -1,14 +1,10 @@
 # Change Log
 
-## 0.0.7
-
-- Change the default backend to `vlc -I rc`
-- Show currently playing song if backend is `vlc -I rc`
-- Command option `--[no-]info` to show/hide currently playing (song) info when using `vlc -I rc` backend only [true]
-
 ## 0.0.6
 
 - Command option `--[no-]margins` to show/hide margins around window content
+- Command option `--[no-]info` to show/hide currently playing (song) info when using `vlc -I rc` backend only [true]
+- Change the default backend to `vlc -I rc` in order to show currently playing song
 - Update command option `--count` to accept `-1` as a valid value for fetching all radio stations
 - Make app fetch all radio stations by default (`--count -1`)
 - Fix issue with bookmark/unbookmark menu items remaining enabled after stopping song
