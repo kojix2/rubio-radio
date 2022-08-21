@@ -47,7 +47,7 @@ module Rubio
         raise if url.match(/\s/)
         @playing_station_name = station_name
 
-        if show_currently_playing? && backend == 'vlc -I rc'
+        if show_currently_playing? && backend == 'vlc -I rc' && !OS.windows?
           @io = IO.popen("#{backend} \"#{url}\"", 'r+')
           update_currently_playing
           continuously_fetch_currently_playing

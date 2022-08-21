@@ -164,7 +164,7 @@ module Rubio
       end
       
       def currently_playing_label
-        return unless show_currently_playing && backend == 'vlc -I rc'
+        return unless show_currently_playing && backend == 'vlc -I rc' && !OS.windows?
         
         label do
           stretchy false
