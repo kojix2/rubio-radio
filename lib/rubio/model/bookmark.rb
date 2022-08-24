@@ -33,7 +33,7 @@ module Rubio
         def save_all
           bookmarks_yaml = YAML.dump(all)
           File.write(FILE_RUBIO_RADIO_BOOKMARKS, bookmarks_yaml)
-        rescue StandardError => e
+        rescue => e
           puts 'Failed in saving bookmarks!'
           puts all.inspect
           puts e.full_message
@@ -43,7 +43,7 @@ module Rubio
         def load_all
           bookmarks_yaml = File.read(FILE_RUBIO_RADIO_BOOKMARKS)
           YAML.load(bookmarks_yaml)
-        rescue StandardError => e
+        rescue => e
           puts 'Failed in loading bookmarks! Returning empty bookmarks.'
           puts e.full_message
           []

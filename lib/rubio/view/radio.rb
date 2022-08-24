@@ -188,7 +188,7 @@ module Rubio
                 station = @station_table.refined_model_array[row]
                 begin
                   @presenter.select_station(station)
-                rescue StandardError => e
+                rescue => e
                   puts e.full_message if debug
                   message_box(e.message)
                 end
@@ -219,7 +219,7 @@ module Rubio
       def about_message_box
         license = begin
           File.read(File.expand_path('../../../LICENSE.txt', __dir__))
-        rescue StandardError => e
+        rescue => e
           puts e.full_message if debug
           ''
         end
