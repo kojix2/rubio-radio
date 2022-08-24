@@ -1,17 +1,9 @@
 # rubio-radio
 [![Gem Version](https://badge.fury.io/rb/rubio-radio.svg)](https://badge.fury.io/rb/rubio-radio)
 
-Linux
-
-![linux screenshot](screenshots/rubio-radio-linux.png)
-
-Mac
-
-![mac screenshot](screenshots/rubio-radio-mac.png)
-
-Windows
-
-![windows screenshot](screenshots/rubio-radio-windows.png)
+| Mac | Linux | Windows |
+|:---:|:-----:|:-------:|
+|![mac screenshot](screenshots/rubio-radio-mac.png)|![linux screenshot](screenshots/rubio-radio-linux.png)|![windows screenshot](screenshots/rubio-radio-windows.png)|
 
 :bowtie: Alpha
 
