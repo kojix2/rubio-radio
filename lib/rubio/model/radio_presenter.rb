@@ -9,7 +9,7 @@ module Rubio
     class RadioPresenter
       attr_reader :player, :initial_width, :initial_height, :options
       attr_accessor :stations, :current_station, :view, :window_height
-    
+
       # Initializes with view options below:
       # :backend, :initial_width, :initial_height, :radio_station_count, :debug,
       # :show_menu, :show_page_count, :show_bookmarks, :show_margins
@@ -25,12 +25,12 @@ module Rubio
         @initial_height = (options[:initial_height] || calculate_initial_height).to_i
         @window_height = @initial_height
         @view = :all
-        
+
         Glimmer::DataBinding::Observer::Proc.new do
           self.window_height = calculate_initial_height
         end.observe(@player, :currently_playing)
       end
-      
+
       def select_station(station)
         playing = station.playing?
         stop_station
@@ -41,34 +41,33 @@ module Rubio
           play_station
         end
       end
-      
+
       def toggle_bookmarked_station(station)
         return unless station
+
         station.bookmarked = !station.bookmarked?
       end
-  
+
       def play_station
-        begin
-          @player.play(current_station.url, station_name: current_station.name)
-          current_station.playing = true
-        rescue StandardError => e
-          self.current_station = nil
-          raise e
-        end
+        @player.play(current_station.url, station_name: current_station.name)
+        current_station.playing = true
+      rescue StandardError => e
+        self.current_station = nil
+        raise e
       end
-  
+
       def stop_station
         return if current_station.nil?
-  
+
         @player.stop
         current_station.playing = false
         self.current_station = nil
       end
-      
+
       def stations_incomplete?
         !@all_stations_fetched && @stations.count < options[:radio_station_count]
       end
-      
+
       def fetch_more_stations
         @loaded_station_offset += @loaded_station_count
         @loaded_station_count *= 2
@@ -78,9 +77,9 @@ module Rubio
         @all_stations_fetched = @stations.count == old_station_count
         self.stations
       end
-      
+
       private
-      
+
       def calculate_initial_height
         window_margin = options[:show_margins] ? (OS.linux? ? 22 : 40) : 0
         currently_playing_height = options[:show_currently_playing] ? ((@player.currently_playing ? @player.currently_playing.lines.size : 1)*16 + 8) : 0

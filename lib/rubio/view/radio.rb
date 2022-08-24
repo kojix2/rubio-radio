@@ -19,9 +19,9 @@ module Rubio
       option :show_currently_playing, default: true
       option :gradually_fetch_stations, default: true
       option :table_per_page, default: 20
-  
+
       attr_reader :presenter
-  
+
       before_body do
         # options is a method on Glimmer::LibUI::Application that contains all options declared above
         @presenter = Model::RadioPresenter.new(options)
@@ -34,7 +34,7 @@ module Rubio
 
       body do
         radio_menu_bar
-        
+
         window('Rubio', @presenter.initial_width, @presenter.initial_height / (OS.linux? ? 2.0 : 1)) do
           margined show_margins
           height <= [@presenter, :window_height,
@@ -53,7 +53,7 @@ module Rubio
           
           vertical_box do
             currently_playing_label
-            
+
             @station_table = refined_table(
               table_columns: station_table_columns,
               model_array: @presenter.stations,
@@ -170,10 +170,10 @@ module Rubio
           end
         end
       end
-      
+
       def currently_playing_label
         return unless show_currently_playing && backend == 'vlc -I rc' && !OS.windows?
-        
+
         label do
           stretchy false
           text <= [@presenter.player, :currently_playing]
@@ -226,7 +226,7 @@ module Rubio
         product = "rubio-radio #{Rubio::VERSION}"
         message_box(product, "#{product}\n\n#{license}")
       end
-      
+
       def toggle_bookmarked_station(station = nil)
         station ||= @presenter.current_station
         @presenter.toggle_bookmarked_station(station)
@@ -255,20 +255,20 @@ module Rubio
           view_playing
         end
       end
-    
+
       private
-      
+
       def monitor_thread(debug)
         Glimmer::LibUI.timer(1) do
           p @presenter.player.history if debug
           next if @presenter.current_station.nil? || @presenter.player.alive?
-  
+
           message_box("player '#{@presenter.player.backend}' stopped!", @presenter.player.thr.to_s)
           @presenter.stop_station
           true
         end
       end
-  
+
       def async_fetch_stations
         Thread.new do
           @presenter.fetch_more_stations

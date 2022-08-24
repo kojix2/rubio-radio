@@ -5,11 +5,10 @@ module Rubio
     class Player
       CURRENTLY_PLAYING_NONE = 'None'
       CURRENTLY_PLAYING_LENGTH_PER_LINE = 90
-    
+
       attr_accessor :backend, :pid, :thr, :status, :history
-      attr_reader :show_currently_playing
-      attr_reader :currently_playing
-      alias_method :show_currently_playing?, :show_currently_playing
+      attr_reader :show_currently_playing, :currently_playing
+      alias show_currently_playing? show_currently_playing
 
       def initialize(backend = 'vlc -I rc', show_currently_playing: true)
         raise unless backend.is_a?(String)
@@ -22,10 +21,10 @@ module Rubio
         @history = []
         self.currently_playing = CURRENTLY_PLAYING_NONE
       end
-      
+
       def currently_playing=(value)
         value = "Playing: #{value}"
-        
+
         @currently_playing = break_by_lines(value)
       end
 
@@ -45,6 +44,7 @@ module Rubio
         # if no space :
         #   * cmmand url        # will be killed by @pid
         raise if url.match(/\s/)
+
         @playing_station_name = station_name
 
         if show_currently_playing? && backend == 'vlc -I rc' && !OS.windows?
@@ -55,27 +55,28 @@ module Rubio
           @pid = spawn(*backend.split(' '), url)
           @thr = Process.detach(@pid)
         end
-        
-        @status = {thr: @thr, pid: @pid, io: @io}
+
+        @status = { thr: @thr, pid: @pid, io: @io }
         @history << @status
       end
-      
+
       def continuously_fetch_currently_playing
         return if @continuously_fetching_currently_playing
+
         @continuously_fetching_currently_playing = true
-      
+
         Glimmer::LibUI.timer(1) do
           update_currently_playing
           @continuously_fetching_currently_playing
         end
       end
-      
+
       def update_currently_playing
         Glimmer::LibUI.queue_main do
           self.currently_playing = currently_playing_text if alive?
         end
       end
-      
+
       def currently_playing_text
         currently_playing_info = info
         if currently_playing_info && !currently_playing_info.strip.empty?
@@ -84,7 +85,7 @@ module Rubio
           @playing_station_name
         end
       end
-      
+
       def info
         result = io_command('info')
         now_playing_line = result.lines.find {|l| l.include?('now_playing:')}
@@ -116,9 +117,9 @@ module Rubio
         @continuously_fetching_currently_playing = false
         @history.each { |history| stop(**history) }
       end
-      
+
       private
-      
+
       def break_by_lines(text, length_per_line: CURRENTLY_PLAYING_LENGTH_PER_LINE)
         new_text_lines = ['']
         text.chars.each_with_index do |char, i|
@@ -132,12 +133,12 @@ module Rubio
         end
         new_text_lines.join("\n")
       end
-      
+
       def io_command(command)
         @io.puts(command)
         io_all_gets
       end
-      
+
       def io_all_gets
         result = ''
         while gets_result = io_gets
@@ -145,9 +146,9 @@ module Rubio
         end
         result
       end
-      
+
       def io_gets
-        Timeout::timeout(0.01) do
+        Timeout.timeout(0.01) do
           @io.gets
         end
       rescue
