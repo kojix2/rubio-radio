@@ -212,7 +212,8 @@ module Rubio
 
         table_columns.merge!(
           'name' => :text,
-          'language' => :text
+          'language' => :text,
+          'country' => :text
         )
       end
 

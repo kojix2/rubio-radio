@@ -19,7 +19,7 @@ module Rubio
         content = URI.parse(base_url + "stations/topvote/#{n}?offset=#{offset}")
         result = []
         JSON[content.read].each_with_index do |s, _i|
-          result << Station.new(s['stationuuid'], s['name'], s['language'], s['url_resolved'])
+          result << Station.new(s['stationuuid'], s['name'], s['language'], s['country'], s['url_resolved'])
         end
         result
       end
