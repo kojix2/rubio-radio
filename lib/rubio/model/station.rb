@@ -4,7 +4,7 @@ require_relative 'bookmark'
 
 module Rubio
   module Model
-    Station = Struct.new(:stationuuid, :name, :language, :url, :play, :bookmark) do
+    Station = Struct.new(:stationuuid, :name, :language, :country, :url, :play, :bookmark) do
       attr_reader :playing, :bookmarked
       alias_method :playing?, :playing
       alias_method :bookmarked?, :bookmarked
