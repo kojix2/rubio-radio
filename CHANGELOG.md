@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.7
+
+- Add country property to radio stations
+
 ## 0.0.6
 
 - Command option `--[no-]margins` to show/hide margins around window content
