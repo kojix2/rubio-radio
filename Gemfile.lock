@@ -36,7 +36,7 @@ GEM
       matrix (>= 0.4.2, < 1.1.0)
     puts_debuggerer (0.13.5)
       awesome_print (~> 1.9.2)
-    rake (13.0.6)
+    rake (13.3.0)
     rouge (3.30.0)
     super_module (1.4.1)
       method_source (>= 0.8.2, < 1.1.0)
