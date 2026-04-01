@@ -31,7 +31,7 @@ GEM
     libui (0.0.15)
     matrix (0.4.2)
     method_source (1.0.0)
-    minitest (6.0.2)
+    minitest (6.0.3)
       drb (~> 2.0)
       prism (~> 1.5)
     os (1.1.4)
