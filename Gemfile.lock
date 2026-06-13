@@ -2,19 +2,26 @@ PATH
   remote: .
   specs:
     rubio-radio (0.0.7)
+      bigdecimal
+      csv
+      fiddle
       glimmer-dsl-libui (= 0.5.24)
+      logger
 
 GEM
   remote: https://rubygems.org/
   specs:
     array_include_methods (1.4.0)
     awesome_print (1.9.2)
+    bigdecimal (4.1.2)
     chunky_png (1.4.0)
     color (1.8)
+    csv (3.3.5)
     drb (2.0.6)
       ruby2_keywords
     equalizer (0.0.11)
     facets (3.1.0)
+    fiddle (1.1.8)
     glimmer (2.7.3)
       array_include_methods (~> 1.4.0)
       facets (>= 3.1.0, < 4.0.0)
@@ -29,6 +36,7 @@ GEM
       rouge (>= 3.26.0, < 4.0.0)
       super_module (~> 1.4.1)
     libui (0.0.15)
+    logger (1.7.0)
     matrix (0.4.2)
     method_source (1.0.0)
     minitest (6.0.6)

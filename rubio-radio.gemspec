@@ -18,5 +18,9 @@ Gem::Specification.new do |spec|
   spec.executables   = %w[rubio]
   spec.require_paths = ['lib']
 
+  spec.add_runtime_dependency 'bigdecimal'
+  spec.add_runtime_dependency 'csv'
+  spec.add_runtime_dependency 'fiddle'
   spec.add_runtime_dependency 'glimmer-dsl-libui', '0.5.24'
+  spec.add_runtime_dependency 'logger'
 end
