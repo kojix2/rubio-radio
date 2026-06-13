@@ -7,9 +7,7 @@ module Rubio
   module Model
     module Bookmark
       DIR_RUBIO_RADIO = File.join(Dir.home, '.rubio-radio')
-      FileUtils.mkdir_p(DIR_RUBIO_RADIO)
       FILE_RUBIO_RADIO_BOOKMARKS = File.join(DIR_RUBIO_RADIO, 'bookmarks.yml')
-      FileUtils.touch(FILE_RUBIO_RADIO_BOOKMARKS)
 
       class << self
         def add(stationuuid)
@@ -31,6 +29,7 @@ module Rubio
         end
 
         def save_all
+          FileUtils.mkdir_p(DIR_RUBIO_RADIO)
           bookmarks_yaml = YAML.dump(all)
           File.write(FILE_RUBIO_RADIO_BOOKMARKS, bookmarks_yaml)
         rescue => e
@@ -41,6 +40,8 @@ module Rubio
         end
 
         def load_all
+          return [] unless File.exist?(FILE_RUBIO_RADIO_BOOKMARKS)
+
           bookmarks_yaml = File.read(FILE_RUBIO_RADIO_BOOKMARKS)
           YAML.load(bookmarks_yaml)
         rescue => e
