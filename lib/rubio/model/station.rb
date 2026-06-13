@@ -11,6 +11,11 @@ module Rubio
 
       def initialize(*args, **kwargs)
         super(*args, **kwargs)
+        self.stationuuid = normalize_text(stationuuid)
+        self.name = normalize_text(name)
+        self.language = normalize_text(language)
+        self.country = normalize_text(country)
+        self.url = normalize_text(url)
         self.playing = false
         self.bookmarked = Bookmark.all.include?(stationuuid)
       end
@@ -28,6 +33,14 @@ module Rubio
         else
           Bookmark.remove(stationuuid)
         end
+      end
+
+      private
+
+      def normalize_text(value)
+        return value unless value.is_a?(String)
+
+        value.dup.force_encoding(Encoding::UTF_8).scrub('')
       end
     end
   end
