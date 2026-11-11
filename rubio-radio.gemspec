@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'bigdecimal'
   spec.add_runtime_dependency 'csv'
   spec.add_runtime_dependency 'fiddle'
-  spec.add_runtime_dependency 'glimmer-dsl-libui', '0.5.24'
+  spec.add_runtime_dependency 'glimmer-dsl-libui', '0.13.1'
   spec.add_runtime_dependency 'logger'
 end
